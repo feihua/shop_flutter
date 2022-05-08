@@ -1,13 +1,13 @@
 //page/login/login_page.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shop_flutter/config/index.dart';
-import 'package:shop_flutter/service/user_service.dart';
-import 'package:shop_flutter/model/user_model.dart';
-import 'package:shop_flutter/utils/navigator_util.dart';
 import 'package:shop_flutter/event/login_event.dart';
+import 'package:shop_flutter/model/user_model.dart';
+import 'package:shop_flutter/service/user_service.dart';
+import 'package:shop_flutter/utils/navigator_util.dart';
 import 'package:shop_flutter/utils/shared_preferences_util.dart';
 
 //登录页面
@@ -19,14 +19,17 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   //账号文本控制器
   TextEditingController _accountTextControl = TextEditingController();
+
   //密码文本控制器
   TextEditingController _passwordTextControl = TextEditingController();
+
   //用户数据服务
   UserService userService = UserService();
+
   //用户数据模型
-  UserModel userModel;
+  late UserModel userModel;
+
   //是否自动验证
-  bool _autovalidator = false;
   final registerFormKey = GlobalKey<FormState>();
 
   @override
@@ -38,133 +41,118 @@ class _LoginPageState extends State<LoginPage> {
             //登录框居中
             child: Center(
                 child: SingleChildScrollView(
-                  //登录框容器
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30.0), 0, ScreenUtil().setWidth(30.0), 0),
-                    height: ScreenUtil.instance.setHeight(800.0),
-                    //外框样式
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0)),
-                    //Form表单
-                    child: Form(
-                      key: registerFormKey,
-                      //垂直布局,上面为账号,下面为密码
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                              padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(60.0))),
-                          Container(
-                            margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                            //账号输入框
-                            child: TextFormField(
-                              //单行
-                              maxLines: 1,
-                              maxLength: 11,
-                              //自动验证
-                              autovalidate: _autovalidator,
-                              //弹出键盘为数字
-                              keyboardType: TextInputType.phone,
-                              //验证回调方法
-                              validator: _validatorAccount,
-                              //边框样式
-                              decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.person,
-                                  color: KColor.loginIconColor,
-                                  size: ScreenUtil.instance.setWidth(60.0),
-                                ),
-                                //提示输入账号
-                                hintText: KString.ACCOUNT_HINT,
-                                //提示文本样式
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: ScreenUtil.instance.setSp(28.0)),
-                                //账号文本样式
-                                labelStyle: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: ScreenUtil.instance.setSp(28.0)),
-                                //账号文本
-                                labelText: KString.ACCOUNT,
-                              ),
-                              //控制器
-                              controller: _accountTextControl,
+              //登录框容器
+              child: Container(
+                margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30.0), 0, ScreenUtil().setWidth(30.0), 0),
+                height: ScreenUtil().setHeight(800.0),
+                //外框样式
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+                //Form表单
+                child: Form(
+                  key: registerFormKey,
+                  //垂直布局,上面为账号,下面为密码
+                  child: Column(
+                    children: <Widget>[
+                      Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(60.0))),
+                      Container(
+                        margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                        //账号输入框
+                        child: TextFormField(
+                          //单行
+                          maxLines: 1,
+                          maxLength: 11,
+                          //自动验证
+                          autovalidateMode: AutovalidateMode.disabled,
+                          //弹出键盘为数字
+                          keyboardType: TextInputType.phone,
+                          //验证回调方法
+                          validator: _validatorAccount,
+                          //边框样式
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: KColor.loginIconColor,
+                              size: ScreenUtil().setWidth(60.0),
                             ),
+                            //提示输入账号
+                            hintText: KString.ACCOUNT_HINT,
+                            //提示文本样式
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(28.0)),
+                            //账号文本样式
+                            labelStyle: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
+                            //账号文本
+                            labelText: KString.ACCOUNT,
                           ),
-                          Container(
-                            margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                            //密码输出框
-                            child: TextFormField(
-                              //单行
-                              maxLines: 1,
-                              maxLength: 12,
-                              //密码显示
-                              obscureText: true,
-                              //自动验证
-                              autovalidate: _autovalidator,
-                              //验证回调方法
-                              validator: _validatorPassWord,
-                              //边框样式
-                              decoration: InputDecoration(
-                                icon: Icon(
-                                  Icons.lock,
-                                  color: KColor.loginIconColor,
-                                  size: ScreenUtil.instance.setWidth(60.0),
-                                ),
-                                //密码提示文本
-                                hintText: KString.PASSWORD_HINT,
-                                //密码提示文本样式
-                                hintStyle: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: ScreenUtil.instance.setSp(28.0)),
-                                //密码标签样式
-                                labelStyle: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: ScreenUtil.instance.setSp(28.0)),
-                                //密码标签
-                                labelText: KString.PASSWORD,
-                              ),
-                              //控制器
-                              controller: _passwordTextControl,
-                            ),
-                          ),
-                          Container(
-                              margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                              child: SizedBox(
-                                height: ScreenUtil.instance.setHeight(80.0),
-                                width: ScreenUtil.instance.setWidth(600.0),
-                                //登录按钮
-                                child: RaisedButton(
-                                  //登录方法
-                                  onPressed: _login,
-                                  color: KColor.loginButtonColor,
-                                  child: Text(
-                                    KString.LOGIN,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: ScreenUtil.instance.setSp(28.0)),
-                                  ),
-                                ),
-                              )),
-                          Container(
-                            margin: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
-                            alignment: Alignment.centerRight,
-                            child: InkWell(
-                              //点击跳转至注册页面
-                              onTap: () => _register(),
-                              child: Text(
-                                //马上注册提示文本
-                                KString.NOW_REGISTER,
-                                style: TextStyle(
-                                  color: KColor.registerTextColor,
-                                  fontSize: ScreenUtil.instance.setSp(24.0)),
-                              ),
-                            ),
-                          )
-                        ],
+                          //控制器
+                          controller: _accountTextControl,
+                        ),
                       ),
-                    ),
+                      Container(
+                        margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                        //密码输出框
+                        child: TextFormField(
+                          //单行
+                          maxLines: 1,
+                          maxLength: 12,
+                          //密码显示
+                          obscureText: true,
+                          //自动验证
+                          autovalidate: _autovalidator,
+                          //验证回调方法
+                          validator: _validatorPassWord,
+                          //边框样式
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.lock,
+                              color: KColor.loginIconColor,
+                              size: ScreenUtil().setWidth(60.0),
+                            ),
+                            //密码提示文本
+                            hintText: KString.PASSWORD_HINT,
+                            //密码提示文本样式
+                            hintStyle: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(28.0)),
+                            //密码标签样式
+                            labelStyle: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
+                            //密码标签
+                            labelText: KString.PASSWORD,
+                          ),
+                          //控制器
+                          controller: _passwordTextControl,
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                          child: SizedBox(
+                            height: ScreenUtil().setHeight(80.0),
+                            width: ScreenUtil().setWidth(600.0),
+                            //登录按钮
+                            child: RaisedButton(
+                              //登录方法
+                              onPressed: _login,
+                              color: KColor.loginButtonColor,
+                              child: Text(
+                                KString.LOGIN,
+                                style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(28.0)),
+                              ),
+                            ),
+                          )),
+                      Container(
+                        margin: EdgeInsets.all(ScreenUtil().setWidth(20.0)),
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          //点击跳转至注册页面
+                          onTap: () => _register(),
+                          child: Text(
+                            //马上注册提示文本
+                            KString.NOW_REGISTER,
+                            style: TextStyle(color: KColor.registerTextColor, fontSize: ScreenUtil().setSp(24.0)),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
+                ),
+              ),
             ))),
       ),
     );
@@ -174,6 +162,7 @@ class _LoginPageState extends State<LoginPage> {
   _register() {
     NavigatorUtil.goRegister(context);
   }
+
   //验证账号
   String _validatorAccount(String value) {
     //值不能为空并且长度要大于等于11
@@ -182,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     return null;
   }
+
   //验证密码
   String _validatorPassWord(String value) {
     //值不能为空并且长度要大于等于6
@@ -190,6 +180,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     return null;
   }
+
   //登录
   _login() {
     //登录之前执行验证
@@ -210,7 +201,7 @@ class _LoginPageState extends State<LoginPage> {
         //登录成功提示
         _showToast(KString.LOGIN_SUCESS);
         //触发登录事件,通知购物车或我的页面此用户已经登录成功
-        loginEventBus.fire(LoginEvent(true,url: userModel.userInfo.avatarUrl,nickName: userModel.userInfo.nickName));
+        loginEventBus.fire(LoginEvent(true, url: userModel.userInfo.avatarUrl, nickName: userModel.userInfo.nickName));
         Navigator.pop(context);
       }, (onFail) {
         print(onFail);
@@ -230,10 +221,10 @@ class _LoginPageState extends State<LoginPage> {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         backgroundColor: KColor.toastBgColor,
         textColor: KColor.toastTextColor,
-        fontSize: ScreenUtil.instance.setSp(28.0));
+        fontSize: ScreenUtil().setSp(28.0));
   }
 
   //保存用户信息至本地
@@ -244,8 +235,8 @@ class _LoginPageState extends State<LoginPage> {
     SharedPreferencesUtil.token = userModel.token;
     await sharedPreferences.setString(KString.TOKEN, userModel.token);
     //存储头像
-    await sharedPreferences.setString(KString.HEAD_URL, userModel.userInfo.avatarUrl);
+    await sharedPreferences.setString(KString.HEAD_URL, userModel.userInfo?.avatarUrl ?? "");
     //存储昵称
-    await sharedPreferences.setString(KString.NICK_NAME, userModel.userInfo.nickName);
+    await sharedPreferences.setString(KString.NICK_NAME, userModel.userInfo?.nickName ?? "");
   }
 }

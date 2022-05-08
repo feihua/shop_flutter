@@ -15,19 +15,15 @@ FillInOrderModel _$FillInOrderModelFromJson(Map<String, dynamic> json) {
     json['addressId'] as int,
     json['checkedAddress'] == null
         ? null
-        : CheckedAddressModel.fromJson(
-            json['checkedAddress'] as Map<String, dynamic>),
+        : CheckedAddressModel.fromJson(json['checkedAddress'] as Map<String, dynamic>),
     (json['freightPrice'] as num)?.toDouble(),
     (json['checkedGoodsList'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CheckedGoodsModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : CheckedGoodsModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$FillInOrderModelToJson(FillInOrderModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$FillInOrderModelToJson(FillInOrderModel instance) => <String, dynamic>{
       'actualPrice': instance.actualPrice,
       'orderTotalPrice': instance.orderTotalPrice,
       'cartId': instance.cartId,
@@ -56,9 +52,7 @@ CheckedAddressModel _$CheckedAddressModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CheckedAddressModelToJson(
-        CheckedAddressModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CheckedAddressModelToJson(CheckedAddressModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'userId': instance.userId,
@@ -93,8 +87,7 @@ CheckedGoodsModel _$CheckedGoodsModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CheckedGoodsModelToJson(CheckedGoodsModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CheckedGoodsModelToJson(CheckedGoodsModel instance) => <String, dynamic>{
       'id': instance.id,
       'userId': instance.userId,
       'goodsId': instance.goodsId,

@@ -12,13 +12,10 @@ class HttpUtil {
   static HttpUtil get instance => _getInstance();
 
   //定义HttpUtil实例
-  static HttpUtil _httpUtil;
+  static final HttpUtil _httpUtil = HttpUtil();
 
   //获取HttpUtil实例方法,工厂模式
   static HttpUtil _getInstance() {
-    if (_httpUtil == null) {
-      _httpUtil = HttpUtil();
-    }
     return _httpUtil;
   }
 
@@ -33,8 +30,8 @@ class HttpUtil {
     );
     //实例化Dio
     dio = Dio(options);
-    dio.interceptors
-        .add(InterceptorsWrapper(onRequest: (RequestOptions options) async {
+    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) async {
+      // Do something before request is sent
       print("========================请求数据===================");
       print("url=${options.uri.toString()}");
       print("params=${options.data}");
@@ -47,26 +44,29 @@ class HttpUtil {
       });
       //解锁
       dio.unlock();
-      return options;
-    }, onResponse: (Response response) {
-      print("========================请求数据===================");
+
+      return handler.next(options); //continue
+    }, onResponse: (response, handler) {
+      print("========================响应数据===================");
       print("code=${response.statusCode}");
       print("response=${response.data}");
-    }, onError: (DioError error) {
+
+      return handler.next(response); // continue
+    }, onError: (DioError e, handler) {
       print("========================请求错误===================");
-      print("message =${error.message}");
+      print("message =${e.message}");
+
+      return handler.next(e); //continue
     }));
   }
 
   //封装get请求
-  Future get(String url,
-      {Map<String, dynamic> parameters, Options options}) async {
+  Future get(String url, {Map<String, dynamic>? parameters, Options? options}) async {
     //返回对象
     Response response;
     //判断请求参数并发起get请求
     if (parameters != null && options != null) {
-      response =
-          await dio.get(url, queryParameters: parameters, options: options);
+      response = await dio.get(url, queryParameters: parameters, options: options);
     } else if (parameters != null && options == null) {
       response = await dio.get(url, queryParameters: parameters);
     } else if (parameters == null && options != null) {
@@ -79,8 +79,7 @@ class HttpUtil {
   }
 
   //封装post请求
-  Future post(String url,
-      {Map<String, dynamic> parameters, Options options}) async {
+  Future post(String url, {Map<String, dynamic>? parameters, Options? options}) async {
     //返回对象
     Response response;
     //判断请求参数并发起post请求

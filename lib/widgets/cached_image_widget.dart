@@ -1,16 +1,20 @@
 //widgets/cached_image_widget.dart文件
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_flutter/config/string.dart';
+
 //缓存图片组件
 class CachedImageWidget extends StatelessWidget {
   //宽度
   double width;
+
   //高度
   double height;
+
   //图片地址
   String url;
+
   //构造方法
   CachedImageWidget(this.width, this.height, this.url);
 
@@ -38,9 +42,7 @@ class CachedImageWidget extends StatelessWidget {
             //加载中
             child: Text(
               KString.LOADING,
-              style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(26.0),
-                  color: Colors.white),
+              style: TextStyle(fontSize: ScreenUtil().setSp(26.0), color: Colors.white),
             ),
           );
         },

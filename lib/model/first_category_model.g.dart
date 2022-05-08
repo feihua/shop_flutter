@@ -23,8 +23,7 @@ FirstCategoryModel _$FirstCategoryModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$FirstCategoryModelToJson(FirstCategoryModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$FirstCategoryModelToJson(FirstCategoryModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'keywords': instance.keywords,

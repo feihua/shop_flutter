@@ -1,20 +1,23 @@
 //page/order/order_detail_page.dart文件
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_flutter/service/order_service.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shop_flutter/config/index.dart';
-import 'package:shop_flutter/widgets/item_text_widget.dart';
 import 'package:shop_flutter/model/order_detail_model.dart';
-import 'package:shop_flutter/widgets/divider_line_widget.dart';
-import 'package:shop_flutter/widgets/no_data_widget.dart';
+import 'package:shop_flutter/service/order_service.dart';
 import 'package:shop_flutter/utils/toast_util.dart';
+import 'package:shop_flutter/widgets/divider_line_widget.dart';
+import 'package:shop_flutter/widgets/item_text_widget.dart';
+import 'package:shop_flutter/widgets/no_data_widget.dart';
+
 //订单详情页面
 class OrderDetailPage extends StatefulWidget {
   //订单Id
   var orderId;
+
   //Token值
   var token;
+
   //构造方法,传入订单Id及Token值
   OrderDetailPage(this.orderId, this.token);
 
@@ -25,12 +28,16 @@ class OrderDetailPage extends StatefulWidget {
 class _OrderDetailPageState extends State<OrderDetailPage> {
   //订单数据服务
   OrderService _orderService = OrderService();
+
   //订单详情数据模型
   OrderDetailModel _orderDetailModel;
+
   //订单详情Future对象
   Future _orderDetailFuture;
+
   //订单动作,删除订单/取消订单
   var orderAction;
+
   //订单参数
   var parameters;
 
@@ -44,8 +51,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
 
   //查询订单详情数据
   _queryOrderDetail() {
-    _orderDetailFuture =
-        _orderService.queryOrderDetail(parameters,(success) {
+    _orderDetailFuture = _orderService.queryOrderDetail(parameters, (success) {
       _orderDetailModel = success;
     }, (error) {});
   }
@@ -92,10 +98,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           }),
     );
   }
+
   //内容组件
   Widget _contentWidget() {
     return Container(
-      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
+      margin: EdgeInsets.all(ScreenUtil().setWidth(20.0)),
       //垂直布局
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,8 +115,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ItemTextWidget(KString.MINE_ORDER_TIME, _orderDetailModel.orderInfo.addTime),
           DividerLineWidget(),
           Container(
-              margin: EdgeInsets.only(left: ScreenUtil.instance.setWidth(20.0)),
-              height: ScreenUtil.instance.setHeight(80.0),
+              margin: EdgeInsets.only(left: ScreenUtil().setWidth(20.0)),
+              height: ScreenUtil().setHeight(80.0),
               alignment: Alignment.centerLeft,
               //水平布局
               child: Row(
@@ -118,9 +125,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   //商品信息
                   Text(
                     KString.ORDER_INFORMATION,
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: ScreenUtil.instance.setSp(26)),
+                    style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26)),
                   ),
                   //已取消订单提示
                   Expanded(
@@ -132,9 +137,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                             child: Text(
                               //已取消文本提示
                               KString.MINE_ORDER_ALREADY_CANCEL,
-                              style: TextStyle(
-                                  color: KColor.defaultTextColor,
-                                  fontSize: ScreenUtil.instance.setSp(26.0)),
+                              style: TextStyle(color: KColor.defaultTextColor, fontSize: ScreenUtil().setSp(26.0)),
                             ),
                           )))
                 ],
@@ -153,9 +156,9 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           DividerLineWidget(),
           Container(
             margin: EdgeInsets.only(
-                left: ScreenUtil.instance.setWidth(20.0),
-                top: ScreenUtil.instance.setHeight(20.0),
-                bottom: ScreenUtil.instance.setHeight(20.0)),
+                left: ScreenUtil().setWidth(20.0),
+                top: ScreenUtil().setHeight(20.0),
+                bottom: ScreenUtil().setHeight(20.0)),
             //垂直布局
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -167,32 +170,23 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     //收货人
                     Text(
                       _orderDetailModel.orderInfo.consignee,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: ScreenUtil.instance.setSp(26.0)),
+                      style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: ScreenUtil.instance.setWidth(20.0)),
+                      padding: EdgeInsets.only(left: ScreenUtil().setWidth(20.0)),
                     ),
                     //手机信息
                     Text(
                       _orderDetailModel.orderInfo.mobile,
-                      style: TextStyle(
-                          color: Colors.black54,
-                          fontSize: ScreenUtil.instance.setSp(26.0)),
+                      style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                     ),
                   ],
                 ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil.instance.setHeight(20.0))),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0))),
                 //收货地址信息
                 Text(
                   _orderDetailModel.orderInfo.address,
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: ScreenUtil.instance.setSp(26.0)),
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                   softWrap: true,
                 ),
               ],
@@ -200,19 +194,17 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ),
           DividerLineWidget(),
           //订单商品合计价格
-          ItemTextWidget(KString.MINE_ORDER_DETAIL_TOTAL,
-              KString.DOLLAR + "${_orderDetailModel.orderInfo.goodsPrice}"),
+          ItemTextWidget(KString.MINE_ORDER_DETAIL_TOTAL, KString.DOLLAR + "${_orderDetailModel.orderInfo.goodsPrice}"),
           DividerLineWidget(),
           //订单运费
-          ItemTextWidget(KString.FREIGHT,
-              KString.DOLLAR + "${_orderDetailModel.orderInfo.freightPrice}"),
+          ItemTextWidget(KString.FREIGHT, KString.DOLLAR + "${_orderDetailModel.orderInfo.freightPrice}"),
           DividerLineWidget(),
           //订单实付价格
-          ItemTextWidget(KString.MINE_ORDER_DETAIL_PAYMENTS,
-              KString.DOLLAR + "${_orderDetailModel.orderInfo.actualPrice}"),
+          ItemTextWidget(
+              KString.MINE_ORDER_DETAIL_PAYMENTS, KString.DOLLAR + "${_orderDetailModel.orderInfo.actualPrice}"),
           DividerLineWidget(),
           Container(
-            height: ScreenUtil.instance.setHeight(100.0),
+            height: ScreenUtil().setHeight(100.0),
             child: Row(
               children: <Widget>[
                 //取消订单
@@ -228,14 +220,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Text(
                     //取消文本
                     KString.CANCEL,
-                    style: TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(28.0),
-                        color: Colors.white),
+                    style: TextStyle(fontSize: ScreenUtil().setSp(28.0), color: Colors.white),
                   ),
                 )),
                 Padding(
-                  padding:
-                      EdgeInsets.only(left: ScreenUtil.instance.setWidth(60.0)),
+                  padding: EdgeInsets.only(left: ScreenUtil().setWidth(60.0)),
                 ),
                 //删除订单
                 Expanded(
@@ -250,9 +239,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   child: Text(
                     //删除按钮文本
                     KString.DELETE,
-                    style: TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(28.0),
-                        color: Colors.white),
+                    style: TextStyle(fontSize: ScreenUtil().setSp(28.0), color: Colors.white),
                   ),
                 ))
               ],
@@ -273,13 +260,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           //商品图片
           Image.network(
             good.picUrl ?? "",
-            width: ScreenUtil.instance.setWidth(160.0),
-            height: ScreenUtil.instance.setHeight(160.0),
+            width: ScreenUtil().setWidth(160.0),
+            height: ScreenUtil().setHeight(160.0),
           ),
           Container(
-            margin: EdgeInsets.only(
-                left: ScreenUtil.instance.setWidth(20.0),
-                top: ScreenUtil.instance.setHeight(20.0)),
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(20.0), top: ScreenUtil().setHeight(20.0)),
             //垂直布局
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -287,25 +272,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 //商品名称
                 Text(
                   good.goodsName,
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: ScreenUtil.instance.setSp(26.0)),
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil.instance.setHeight(10.0),
-                    ),
+                  padding: EdgeInsets.only(
+                    top: ScreenUtil().setHeight(10.0),
+                  ),
                 ),
                 //商品规格
                 Text(
                   good.specifications[0],
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: ScreenUtil.instance.setSp(26.0)),
+                  style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(26.0)),
                 ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil.instance.setHeight(10.0))),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0))),
               ],
             ),
           ),
@@ -313,8 +292,8 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               child: Container(
             alignment: Alignment.centerRight,
             margin: EdgeInsets.only(
-              left: ScreenUtil.instance.setWidth(20.0),
-              right: ScreenUtil.instance.setWidth(20.0),
+              left: ScreenUtil().setWidth(20.0),
+              right: ScreenUtil().setWidth(20.0),
             ),
             //垂直布局
             child: Column(
@@ -322,19 +301,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 //商品价格
                 Text(
                   "¥${good.price}",
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: ScreenUtil.instance.setSp(24.0)),
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                 ),
-                Padding(
-                    padding: EdgeInsets.only(
-                        top: ScreenUtil.instance.setHeight(20.0))),
+                Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0))),
                 //商品数量
                 Text(
                   "X${good.number}",
-                  style: TextStyle(
-                      color: Colors.black54,
-                      fontSize: ScreenUtil.instance.setSp(24.0)),
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                 ),
               ],
             ),
@@ -354,18 +327,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
             //提示文本
             title: Text(
               KString.TIPS,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(28.0)),
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
             ),
             //取消或删除提示文本
             content: Text(
-              orderAction == 1
-                  ? KString.MINE_ORDER_CANCEL_TIPS
-                  : KString.MINE_ORDER_DELETE_TIPS,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(28.0)),
+              orderAction == 1 ? KString.MINE_ORDER_CANCEL_TIPS : KString.MINE_ORDER_DELETE_TIPS,
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
             ),
             //动作按钮
             actions: <Widget>[
@@ -378,9 +345,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   },
                   child: Text(
                     KString.CANCEL,
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: ScreenUtil.instance.setSp(24.0)),
+                    style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                   )),
               //确认按钮
               FlatButton(
@@ -397,14 +362,13 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   },
                   child: Text(
                     KString.CONFIRM,
-                    style: TextStyle(
-                        color: Colors.black54,
-                        fontSize: ScreenUtil.instance.setSp(24.0)),
+                    style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                   )),
             ],
           );
         });
   }
+
   //删除订单
   _deleteOrder() {
     //订单Id参数
@@ -415,11 +379,12 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
       ToastUtil.showToast(error);
     });
   }
+
   //取消订单
   _cancelOrder() {
     //订单Id参数
     var parameters = {"orderId": widget.orderId};
-    _orderService.cancelOrder(parameters,  (success) {
+    _orderService.cancelOrder(parameters, (success) {
       ToastUtil.showToast(KString.MINE_ORDER_CANCEL_SUCCESS);
       setState(() {
         _orderDetailModel.orderInfo.handleOption.cancel = false;

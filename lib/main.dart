@@ -1,10 +1,10 @@
 //main.dart文件
-import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
-import 'package:shop_flutter/router/routers.dart';
-import 'package:shop_flutter/router/application.dart';
-import 'package:shop_flutter/provider/user_info.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shop_flutter/provider/user_info.dart';
+import 'package:shop_flutter/router/application.dart';
+import 'package:shop_flutter/router/routers.dart';
 
 //入口程序
 void main() {
@@ -16,7 +16,7 @@ void main() {
 class ShopApp extends StatelessWidget {
   ShopApp() {
     //定义路由
-    final router = Router();
+    final router = FluroRouter();
     //配置路由
     Routers.configureRoutes(router);
     //指定路由至Application对象,便于调用
@@ -29,12 +29,12 @@ class ShopApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         //用户信息
-        ChangeNotifierProvider(builder: (_) => UserInfoProvider()),
+        Provider<UserInfoProvider>(create: (_) => UserInfoProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         //生成路由的回调函数，当导航的命名路由的时候，会使用这个来生成界面
-        onGenerateRoute: Application.router.generator,
+        onGenerateRoute: Application.router?.generator,
         //定义主题
         theme: ThemeData(
           primaryColor: Colors.red,

@@ -1,8 +1,8 @@
 //service/home_service.dart文件
-import 'package:shop_flutter/utils/http_util.dart';
 import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/config/string.dart';
 import 'package:shop_flutter/model/home_model.dart';
+import 'package:shop_flutter/utils/http_util.dart';
 
 //定义成功返回列表数据
 typedef OnSuccessList<T>(List<T> list);
@@ -13,7 +13,6 @@ typedef OnFail(String message);
 
 //首页数据服务
 class HomeService {
-
   //查询首页数据,异步处理
   Future queryHomeData(OnSuccess onSuccess, OnFail onFail) async {
     try {
@@ -34,5 +33,4 @@ class HomeService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
-
 }

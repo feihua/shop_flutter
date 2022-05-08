@@ -5,7 +5,7 @@ import 'package:shop_flutter/model/user_model.dart';
 //用户信息状态管理
 class UserInfoProvider with ChangeNotifier {
   //用户数据模型
-  UserModel userModel;
+  late UserModel userModel;
 
   //更新用户信息
   updateInfo(UserModel userModel) {

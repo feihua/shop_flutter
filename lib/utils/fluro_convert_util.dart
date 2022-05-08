@@ -20,7 +20,7 @@ class FluroConvertUtil {
 
   //Fluro传递后取出参数解析
   static String fluroCnParamsDecode(String encodeCn) {
-    var list = List<int>();
+    var list = <int>[];
     jsonDecode(encodeCn).forEach(list.add);
     String value = Utf8Decoder().convert(list);
     return value;

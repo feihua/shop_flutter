@@ -10,7 +10,8 @@ class StringUtil {
 
   //字符串json解码
   static String decode(String encodeCn) {
-    var list = List<int>();
+    var list = <int>[];
+
     jsonDecode(encodeCn).forEach(list.add);
     String value = Utf8Decoder().convert(list);
     return value;

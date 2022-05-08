@@ -1,13 +1,14 @@
 //page/mine/collect_page.dart文件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_flutter/service/collect_service.dart';
-import 'package:shop_flutter/utils/shared_preferences_util.dart';
-import 'package:shop_flutter/model/collect_list_model.dart';
-import 'package:shop_flutter/utils/toast_util.dart';
 import 'package:shop_flutter/config/index.dart';
-import 'package:shop_flutter/widgets/no_data_widget.dart';
+import 'package:shop_flutter/model/collect_list_model.dart';
+import 'package:shop_flutter/service/collect_service.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
+import 'package:shop_flutter/utils/shared_preferences_util.dart';
+import 'package:shop_flutter/utils/toast_util.dart';
+import 'package:shop_flutter/widgets/no_data_widget.dart';
+
 //收藏页面
 class CollectPage extends StatefulWidget {
   @override
@@ -17,14 +18,19 @@ class CollectPage extends StatefulWidget {
 class _CollectPageState extends State<CollectPage> {
   //收藏数据服务
   CollectService _collectService = CollectService();
+
   //收藏列表
   List<CollectModel> _collects = List();
+
   //token值
   var token;
+
   //当前页
   var _page = 1;
+
   //每页个数
   var _limit = 10;
+
   //类型
   var _type = 0;
 
@@ -43,7 +49,7 @@ class _CollectPageState extends State<CollectPage> {
   _queryCollect() {
     //参数
     var parameters = {"type": _type, "page": _page, "limit": _limit};
-    _collectService.queryCollect(parameters,(successList) {
+    _collectService.queryCollect(parameters, (successList) {
       setState(() {
         _collects = successList;
       });
@@ -61,7 +67,7 @@ class _CollectPageState extends State<CollectPage> {
         centerTitle: true,
       ),
       body: Container(
-        margin: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
+        margin: EdgeInsets.all(ScreenUtil().setWidth(20.0)),
         child: _collects.length == 0
             //没有数据组件
             ? NoDataWidget()
@@ -70,14 +76,14 @@ class _CollectPageState extends State<CollectPage> {
                 //商品个数
                 itemCount: _collects.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  //一行两列
-                  crossAxisCount: 2,
-                  mainAxisSpacing: ScreenUtil.instance.setWidth(10.0),
-                  crossAxisSpacing: ScreenUtil.instance.setHeight(10.0)),
-                  itemBuilder: (BuildContext context, int index) {
-                    //根据索引返回商品项
-                    return getGoodsItemWidget(_collects[index], index);
-                  },
+                    //一行两列
+                    crossAxisCount: 2,
+                    mainAxisSpacing: ScreenUtil().setWidth(10.0),
+                    crossAxisSpacing: ScreenUtil().setHeight(10.0)),
+                itemBuilder: (BuildContext context, int index) {
+                  //根据索引返回商品项
+                  return getGoodsItemWidget(_collects[index], index);
+                },
               ),
       ),
     );
@@ -119,8 +125,7 @@ class _CollectPageState extends State<CollectPage> {
                     "¥${collect.retailPrice}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14.0, color: Colors.deepOrangeAccent),
+                    style: TextStyle(fontSize: 14.0, color: Colors.deepOrangeAccent),
                   ),
                 ],
               ),
@@ -143,16 +148,12 @@ class _CollectPageState extends State<CollectPage> {
             //提示文本
             title: Text(
               KString.TIPS,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(28.0)),
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
             ),
             //取消提示文本
             content: Text(
               KString.MINE_CANCEL_COLLECT,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(26.0)),
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
             ),
             //操作按钮
             actions: <Widget>[
@@ -163,9 +164,7 @@ class _CollectPageState extends State<CollectPage> {
                   },
                   child: Text(
                     KString.CANCEL,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: ScreenUtil.instance.setSp(26.0)),
+                    style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(26.0)),
                   )),
               //确定按钮
               FlatButton(
@@ -176,14 +175,13 @@ class _CollectPageState extends State<CollectPage> {
                   },
                   child: Text(
                     KString.CONFIRM,
-                    style: TextStyle(
-                        color: KColor.defaultTextColor,
-                        fontSize: ScreenUtil.instance.setSp(26.0)),
+                    style: TextStyle(color: KColor.defaultTextColor, fontSize: ScreenUtil().setSp(26.0)),
                   )),
             ],
           );
         });
   }
+
   //取消收藏处理
   _cancelCollect(int valueId, int index) {
     //type为0表示取消收藏,商品Id
@@ -197,6 +195,7 @@ class _CollectPageState extends State<CollectPage> {
       ToastUtil.showToast(error);
     });
   }
+
   //点击跳转至商品详情页
   _itemClick(int id) {
     NavigatorUtil.goGoodsDetails(context, id);

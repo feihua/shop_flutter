@@ -1,13 +1,17 @@
 //widgets/webview_widget.dart文件
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
+// import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 //网页加载组件
 class WebViewWidget extends StatelessWidget {
   //路径
   var url;
+
   //标题
   var title;
+
   //构造方法
   WebViewWidget(this.url, this.title);
 
@@ -20,12 +24,15 @@ class WebViewWidget extends StatelessWidget {
         centerTitle: true,
       ),
       //使用WebviewScaffold加载网页
-      body: WebviewScaffold(
-        url: url,
-        withZoom: false,
-        withLocalStorage: true,
-        withJavascript: true,
-      ),
+      // body: WebviewScaffold(
+      //   url: url,
+      //   withZoom: false,
+      //   withLocalStorage: true,
+      //   withJavascript: true,
+      // ),
+      // body: WebView(
+      //   initialUrl: 'https://flutter.cn',
+      // ),
     );
   }
 }

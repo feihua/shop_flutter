@@ -1,8 +1,9 @@
 //widgets/loading_dialog_widget.dart文件
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shop_flutter/config/index.dart';
+
 //加载数据组件
 class LoadingDialogWidget extends StatefulWidget {
   @override
@@ -17,7 +18,7 @@ class _LoadingDialogWidgetState extends State<LoadingDialogWidget> {
         //加载数据组件
         child: SpinKitFoldingCube(
           //大小
-          size: ScreenUtil.instance.setWidth(60.0),
+          size: ScreenUtil().setWidth(60.0),
           //颜色
           color: KColor.watingColor,
         ),

@@ -12,15 +12,11 @@ CollectListModel _$CollectListModelFromJson(Map<String, dynamic> json) {
     json['pages'] as int,
     json['limit'] as int,
     json['page'] as int,
-    (json['list'] as List)
-        ?.map((e) =>
-            e == null ? null : CollectModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['list'] as List)?.map((e) => e == null ? null : CollectModel.fromJson(e as Map<String, dynamic>))?.toList(),
   );
 }
 
-Map<String, dynamic> _$CollectListModelToJson(CollectListModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CollectListModelToJson(CollectListModel instance) => <String, dynamic>{
       'total': instance.total,
       'pages': instance.pages,
       'limit': instance.limit,
@@ -40,8 +36,7 @@ CollectModel _$CollectModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CollectModelToJson(CollectModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CollectModelToJson(CollectModel instance) => <String, dynamic>{
       'brief': instance.brief,
       'picUrl': instance.picUrl,
       'valueId': instance.valueId,

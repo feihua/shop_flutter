@@ -2,10 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/config/icon.dart';
+import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/service/user_service.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
+
 //注册页面
 class RegisterPage extends StatefulWidget {
   @override
@@ -15,10 +16,13 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   //账号文本控制器
   TextEditingController _accountTextControl = TextEditingController();
+
   //密码文本控制器
   TextEditingController _passwordTextControl = TextEditingController();
+
   //用户数据服务
   UserService userService = UserService();
+
   //是否自动验证
   bool _autovalidator = false;
   final registerFormKey = GlobalKey<FormState>();
@@ -27,121 +31,110 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Container(
-          //注册框居中
-          child: Center(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30.0), 0, ScreenUtil().setWidth(30.0), 0),
-              height: ScreenUtil.instance.setHeight(700.0),
-              //边框样式
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-              //注册表单
-              child: Form(
-                key: registerFormKey,
-                //垂直布局
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                        padding: EdgeInsets.only(top: ScreenUtil.instance.setHeight(60.0))),
-                    Container(
-                      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                      //账号输入表单
-                      child: TextFormField(
-                        //单行显示
-                        maxLines: 1,
-                        maxLength: 11,
-                        //自动验证
-                        autovalidate: _autovalidator,
-                        //数字键盘
-                        keyboardType: TextInputType.phone,
-                        //账号验证方法
-                        validator: _validatorAccount,
-                        //边框样式
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.account_circle,
-                            color: KColor.registerIconColor,
-                            size: ScreenUtil.instance.setWidth(60.0),
-                          ),
-                          //提示文本
-                          hintText: KString.ACCOUNT_HINT,
-                          //提示文本样式
-                          hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: ScreenUtil.instance.setSp(28.0)),
-                          //账号标签文本样式
-                          labelStyle: TextStyle(
-                              color: Colors.black54,
-                              fontSize: ScreenUtil.instance.setSp(28.0)),
-                          //账号标签文本
-                          labelText: KString.ACCOUNT,
+          child: Container(
+        //注册框居中
+        child: Center(
+          child: Container(
+            margin: EdgeInsets.fromLTRB(ScreenUtil().setWidth(30.0), 0, ScreenUtil().setWidth(30.0), 0),
+            height: ScreenUtil().setHeight(700.0),
+            //边框样式
+            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
+            //注册表单
+            child: Form(
+              key: registerFormKey,
+              //垂直布局
+              child: Column(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(60.0))),
+                  Container(
+                    margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                    //账号输入表单
+                    child: TextFormField(
+                      //单行显示
+                      maxLines: 1,
+                      maxLength: 11,
+                      //自动验证
+                      autovalidate: _autovalidator,
+                      //数字键盘
+                      keyboardType: TextInputType.phone,
+                      //账号验证方法
+                      validator: _validatorAccount,
+                      //边框样式
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.account_circle,
+                          color: KColor.registerIconColor,
+                          size: ScreenUtil().setWidth(60.0),
                         ),
-                        //控制器
-                        controller: _accountTextControl,
+                        //提示文本
+                        hintText: KString.ACCOUNT_HINT,
+                        //提示文本样式
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(28.0)),
+                        //账号标签文本样式
+                        labelStyle: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
+                        //账号标签文本
+                        labelText: KString.ACCOUNT,
                       ),
+                      //控制器
+                      controller: _accountTextControl,
                     ),
-                    Container(
-                      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                      //密码输入表单
-                      child: TextFormField(
-                        //单行
-                        maxLines: 1,
-                        maxLength: 12,
-                        //自动验证
-                        autovalidate: _autovalidator,
-                        //验证方法
-                        validator: _validatorPassWord,
-                        //边框样式
-                        decoration: InputDecoration(
-                          icon: Icon(
-                            KIcon.PASS_WORD,
-                            color: KColor.registerIconColor,
-                            size: ScreenUtil.instance.setWidth(60.0),
-                          ),
-                          //请输入密码提示
-                          hintText: KString.PASSWORD_HINT,
-                          //请输入密码提示样式
-                          hintStyle: TextStyle(
-                              color: Colors.grey,
-                              fontSize: ScreenUtil.instance.setSp(28.0)),
-                          //密码标签文本样式
-                          labelStyle: TextStyle(
-                              color: Colors.black54,
-                              fontSize: ScreenUtil.instance.setSp(28.0)),
-                          //密码标签文本
-                          labelText: KString.PASSWORD,
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                    //密码输入表单
+                    child: TextFormField(
+                      //单行
+                      maxLines: 1,
+                      maxLength: 12,
+                      //自动验证
+                      autovalidate: _autovalidator,
+                      //验证方法
+                      validator: _validatorPassWord,
+                      //边框样式
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          KIcon.PASS_WORD,
+                          color: KColor.registerIconColor,
+                          size: ScreenUtil().setWidth(60.0),
                         ),
-                        //控制器
-                        controller: _passwordTextControl,
+                        //请输入密码提示
+                        hintText: KString.PASSWORD_HINT,
+                        //请输入密码提示样式
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(28.0)),
+                        //密码标签文本样式
+                        labelStyle: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
+                        //密码标签文本
+                        labelText: KString.PASSWORD,
                       ),
+                      //控制器
+                      controller: _passwordTextControl,
                     ),
-                    Container(
-                        margin: EdgeInsets.all(ScreenUtil.instance.setWidth(30.0)),
-                        child: SizedBox(
-                          height: ScreenUtil.instance.setHeight(80.0),
-                          width: ScreenUtil.instance.setWidth(600.0),
-                          //注册按钮
-                          child: RaisedButton(
-                            onPressed: _register,
-                            color: KColor.registerButtonColor,
-                            child: Text(
-                              //注册文本
-                              KString.REGISTER,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: ScreenUtil.instance.setSp(28.0)),
-                            ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.all(ScreenUtil().setWidth(30.0)),
+                      child: SizedBox(
+                        height: ScreenUtil().setHeight(80.0),
+                        width: ScreenUtil().setWidth(600.0),
+                        //注册按钮
+                        child: RaisedButton(
+                          onPressed: _register,
+                          color: KColor.registerButtonColor,
+                          child: Text(
+                            //注册文本
+                            KString.REGISTER,
+                            style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(28.0)),
                           ),
-                        )),
-                  ],
-                ),
+                        ),
+                      )),
+                ],
               ),
             ),
           ),
+        ),
       )),
     );
   }
+
   //验证账号
   String _validatorAccount(String value) {
     //值不能为空并且长度要大于等于11
@@ -150,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
     }
     return null;
   }
+
   //验证密码
   String _validatorPassWord(String value) {
     //值不能为空并且长度要大于等于6
@@ -168,7 +162,7 @@ class _RegisterPageState extends State<RegisterPage> {
         timeInSecForIos: 1,
         backgroundColor: KColor.toastBgColor,
         textColor: KColor.toastTextColor,
-        fontSize: ScreenUtil.instance.setSp(28.0));
+        fontSize: ScreenUtil().setSp(28.0));
   }
 
   //注册

@@ -1,8 +1,9 @@
 //page/category/category_page.dart文件
 import 'package:flutter/material.dart';
+import 'package:shop_flutter/config/string.dart';
 import 'package:shop_flutter/page/category/first_category.dart';
 import 'package:shop_flutter/page/category/sub_category.dart';
-import 'package:shop_flutter/config/string.dart';
+
 //分类页面
 class CategoryPage extends StatefulWidget {
   @override
@@ -10,32 +11,31 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          //分类标题
-          title: Text(KString.CATEGORY_TITLE),
-          centerTitle: true,
+      appBar: AppBar(
+        //分类标题
+        title: Text(KString.CATEGORY_TITLE),
+        centerTitle: true,
+      ),
+      body: Container(
+        //水平布局
+        child: Row(
+          children: <Widget>[
+            //左侧为一级分类
+            Expanded(
+              flex: 2,
+              child: FirstCategoryWidget(),
+            ),
+            //右侧为二级分类
+            Expanded(
+              flex: 8,
+              child: SubCategoryWidget(),
+            ),
+          ],
         ),
-        body: Container(
-          //水平布局
-          child: Row(
-              children: <Widget>[
-                //左侧为一级分类
-                Expanded(
-                  flex: 2,
-                  child: FirstCategoryWidget(),
-                ),
-                //右侧为二级分类
-                Expanded(
-                  flex: 8,
-                  child: SubCategoryWidget(),
-                ),
-                ],
-          ),
-        ),
+      ),
     );
   }
 }

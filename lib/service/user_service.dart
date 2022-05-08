@@ -1,7 +1,8 @@
 //service/user_service.dart文件
 import 'package:shop_flutter/config/index.dart';
-import 'package:shop_flutter/utils/http_util.dart';
 import 'package:shop_flutter/model/user_model.dart';
+import 'package:shop_flutter/utils/http_util.dart';
+
 //定义成功返回列表数据
 typedef OnSuccessList<T>(List<T> list);
 //定义成功返回数据
@@ -11,7 +12,6 @@ typedef OnFail(String message);
 
 //用户数据服务
 class UserService {
-
   //注册请求方法,需要传递账号,密码等参数
   Future register(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail) async {
     try {

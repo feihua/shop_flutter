@@ -8,18 +8,12 @@ part of 'cart_list_model.dart';
 
 CartListModel _$CartListModelFromJson(Map<String, dynamic> json) {
   return CartListModel(
-    json['cartTotal'] == null
-        ? null
-        : CartTotalModel.fromJson(json['cartTotal'] as Map<String, dynamic>),
-    (json['cartList'] as List)
-        ?.map((e) =>
-            e == null ? null : CartModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    json['cartTotal'] == null ? null : CartTotalModel.fromJson(json['cartTotal'] as Map<String, dynamic>),
+    (json['cartList'] as List).map((e) => e == null ? null : CartModel.fromJson(e as Map<String, dynamic>)).toList(),
   );
 }
 
-Map<String, dynamic> _$CartListModelToJson(CartListModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CartListModelToJson(CartListModel instance) => <String, dynamic>{
       'cartTotal': instance.cartTotal,
       'cartList': instance.cartList,
     };
@@ -31,8 +25,7 @@ CartTotalModel _$CartTotalModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CartTotalModelToJson(CartTotalModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CartTotalModelToJson(CartTotalModel instance) => <String, dynamic>{
       'goodsAmount': instance.goodsAmount,
       'checkedGoodsAmount': instance.checkedGoodsAmount,
     };

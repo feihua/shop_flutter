@@ -1,25 +1,27 @@
 //page/goods/goods_detail_page.dart文件
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_flutter/service/goods_service.dart';
-import 'package:shop_flutter/service/cart_service.dart';
-import 'package:shop_flutter/model/goods_detail_model.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/event/refresh_event.dart';
+import 'package:shop_flutter/model/goods_detail_model.dart';
 import 'package:shop_flutter/page/goods/goods_detail_gallery.dart';
+import 'package:shop_flutter/service/cart_service.dart';
+import 'package:shop_flutter/service/collect_service.dart';
+import 'package:shop_flutter/service/goods_service.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
 import 'package:shop_flutter/utils/shared_preferences_util.dart';
 import 'package:shop_flutter/utils/toast_util.dart';
-import 'package:shop_flutter/widgets/cart_number_widget.dart';
-import 'package:shop_flutter/event/refresh_event.dart';
-import 'package:shop_flutter/service/collect_service.dart';
 import 'package:shop_flutter/widgets/cached_image_widget.dart';
+import 'package:shop_flutter/widgets/cart_number_widget.dart';
+
 //商品详情页面
 class GoodsDetailPage extends StatefulWidget {
   //商品Id
   int goodsId;
+
   //构造方法,商品Id为必传参数
   GoodsDetailPage({Key key, @required this.goodsId}) : super(key: key);
 
@@ -30,24 +32,34 @@ class GoodsDetailPage extends StatefulWidget {
 class _GoodsDetailPageState extends State<GoodsDetailPage> {
   //商品Id
   int goodsId;
+
   //商品数据服务
   GoodsService _goodsService = GoodsService();
+
   //购物车数据服务
   CartService _cartService = CartService();
+
   //商品收藏数据服务
   CollectService _collectService = CollectService();
+
   //商品详情数据模型
   GoodsDetailModel _goodsDetail;
+
   //参数对象
   var parameters;
+
   //规格索引
   int _specificationIndex = 0;
+
   //商品数量
   int _number = 1;
+
   //请求商品详情接口返回的Future对象
   var _goodsDetailFuture;
+
   //Token
   var token;
+
   //是否收藏
   var _isCollection = false;
 
@@ -125,21 +137,19 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                         onTap: () => _collection(),
                         child: Icon(
                           Icons.star_border,
-                          color: _isCollection
-                              ? KColor.collectionButtonColor
-                              : KColor.unCollectionButtonColor,
+                          color: _isCollection ? KColor.collectionButtonColor : KColor.unCollectionButtonColor,
                           size: 30.0,
                         ),
                       ),
                     )),
                 //购物车图标
                 Expanded(
-                    flex: 1,
-                    child:Icon(
-                      Icons.add_shopping_cart,
-                      color: KColor.addCartIconColor,
-                      size: 30.0,
-                    ),
+                  flex: 1,
+                  child: Icon(
+                    Icons.add_shopping_cart,
+                    color: KColor.addCartIconColor,
+                    size: 30.0,
+                  ),
                 ),
                 //添加至购物车按钮
                 Expanded(
@@ -147,16 +157,14 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                     child: Container(
                       color: KColor.addCartButtonColor,
                       child: InkWell(
-                        //打开底部弹出框
-                        onTap: () => openBottomSheet(
-                            context, _goodsDetail.productList[0], 1),
-                        child: Center(
-                          child: Text(
-                            KString.ADD_CART,
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 14.0),
-                          ),
-                        )),
+                          //打开底部弹出框
+                          onTap: () => openBottomSheet(context, _goodsDetail.productList[0], 1),
+                          child: Center(
+                            child: Text(
+                              KString.ADD_CART,
+                              style: TextStyle(color: Colors.white, fontSize: 14.0),
+                            ),
+                          )),
                     )),
                 //立即购买按钮
                 Expanded(
@@ -164,16 +172,14 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   child: Container(
                       color: KColor.buyButtonColor,
                       child: InkWell(
-                        //打开底部弹出框
-                        onTap: () => openBottomSheet(
-                            context, _goodsDetail.productList[0], 2),
-                        child: Center(
-                          child: Text(
-                            KString.BUY,
-                            style: TextStyle(
-                                color: Colors.white, fontSize: 14.0),
-                          ),
-                        ))),
+                          //打开底部弹出框
+                          onTap: () => openBottomSheet(context, _goodsDetail.productList[0], 2),
+                          child: Center(
+                            child: Text(
+                              KString.BUY,
+                              style: TextStyle(color: Colors.white, fontSize: 14.0),
+                            ),
+                          ))),
                 ),
               ],
             ),
@@ -192,7 +198,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
           return SafeArea(
             child: SizedBox(
               width: double.infinity,
-              height: ScreenUtil.instance.setHeight(630.0),
+              height: ScreenUtil().setHeight(630.0),
               child: Container(
                 //垂直布局
                 child: Column(
@@ -200,16 +206,14 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
+                      margin: EdgeInsets.all(ScreenUtil().setWidth(20.0)),
                       //水平布局
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           //商品图片
                           CachedImageWidget(
-                              ScreenUtil.instance.setWidth(120.0),
-                              ScreenUtil.instance.setWidth(120.0),
-                              productList.url),
+                              ScreenUtil().setWidth(120.0), ScreenUtil().setWidth(120.0), productList.url),
                           //垂直布局,价格及选择规格
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -217,65 +221,56 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                               //价格
                               Text(
                                 KString.PRICE + "：" + "${productList.price}",
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: ScreenUtil.instance.setSp(24.0)),
+                                style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(
-                                    top: ScreenUtil.instance.setHeight(10.0)),
+                                padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
                               ),
                               //选择规格
                               Text(KString.ALREAD_SELECTED +
-                                  "：" + _goodsDetail.productList[0].specifications[_specificationIndex])
+                                  "：" +
+                                  _goodsDetail.productList[0].specifications[_specificationIndex])
                             ],
                           ),
                           Expanded(
                               child: Container(
-                                alignment: Alignment.centerRight,
-                                //删除按钮
-                                child: IconButton(
-                                  icon: Icon(Icons.delete),
-                                  //点击返回
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              )),
+                            alignment: Alignment.centerRight,
+                            //删除按钮
+                            child: IconButton(
+                              icon: Icon(Icons.delete),
+                              //点击返回
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )),
                         ],
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(10.0)),
+                      margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
                       //商品规格提示
                       child: Text(
                         KString.SPECIFICATIONS,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: ScreenUtil.instance.setSp(30.0)),
+                        style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(30.0)),
                       ),
                     ),
                     //商品规格
-                    Wrap(
-                        children: _specificationsWidget(productList.specifications)),
+                    Wrap(children: _specificationsWidget(productList.specifications)),
                     Padding(
-                      padding: EdgeInsets.only(
-                          top: ScreenUtil.instance.setHeight(10.0)),
+                      padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
                     ),
                     Container(
-                      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(10.0)),
+                      margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
                       //商品数量
                       child: Text(
                         KString.NUMBER,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: ScreenUtil.instance.setSp(30.0)),
+                        style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(30.0)),
                       ),
                     ),
                     Container(
-                        margin:
-                        EdgeInsets.all(ScreenUtil.instance.setWidth(10.0)),
-                        height: ScreenUtil.instance.setHeight(80),
+                        margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
+                        height: ScreenUtil().setHeight(80),
                         alignment: Alignment.centerLeft,
                         //商品数量加减组件
                         child: CartNumberWidget(1, (number) {
@@ -286,28 +281,26 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                         })),
                     Expanded(
                         child: Stack(
-                          alignment: Alignment.bottomLeft,
-                          children: <Widget>[
-                            SizedBox(
-                              height: ScreenUtil.instance.setHeight(100.0),
-                              width: double.infinity,
-                              child: InkWell(
-                                //点击添加至购物车或立即购买
-                                onTap: () => showType == 1 ? _addCart() : _buy(),
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  color: KColor.defaultButtonColor,
-                                  //添加至购物车或立即购买文本
-                                  child: Text(
-                                    showType == 1 ? KString.ADD_CART : KString.BUY,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: ScreenUtil.instance.setSp(30.0)),
-                                  ),
-                                )),
-                            ),
-                          ],
-                        ))
+                      alignment: Alignment.bottomLeft,
+                      children: <Widget>[
+                        SizedBox(
+                          height: ScreenUtil().setHeight(100.0),
+                          width: double.infinity,
+                          child: InkWell(
+                              //点击添加至购物车或立即购买
+                              onTap: () => showType == 1 ? _addCart() : _buy(),
+                              child: Container(
+                                alignment: Alignment.center,
+                                color: KColor.defaultButtonColor,
+                                //添加至购物车或立即购买文本
+                                child: Text(
+                                  showType == 1 ? KString.ADD_CART : KString.BUY,
+                                  style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(30.0)),
+                                ),
+                              )),
+                        ),
+                      ],
+                    ))
                   ],
                 ),
               ),
@@ -322,7 +315,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
     //循环迭代出所有规格
     for (int i = 0; i < specifications.length; i++) {
       specificationsWidget.add(Container(
-          padding: EdgeInsets.all(ScreenUtil.instance.setWidth(10.0)),
+          padding: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
           child: InkWell(
             child: Chip(
               //规格名称
@@ -330,15 +323,11 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                 specifications[i],
                 //选中与未选中使用不同颜色区分
                 style: TextStyle(
-                    color: i == _specificationIndex
-                        ? Colors.white
-                        : Colors.black54,
-                    fontSize: ScreenUtil.instance.setSp(24.0)),
+                    color: i == _specificationIndex ? Colors.white : Colors.black54,
+                    fontSize: ScreenUtil().setSp(24.0)),
               ),
               //选中与未选中使用不同颜色区分
-              backgroundColor: i == _specificationIndex
-                  ? KColor.specificationWarpColor
-                  : Colors.grey,
+              backgroundColor: i == _specificationIndex ? KColor.specificationWarpColor : Colors.grey,
             ),
           )));
     }
@@ -360,13 +349,16 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
           "number": _number
         };
         //调用购物车数据服务的addCart方法
-        _cartService.addCart(parameters, (value) {
-          ToastUtil.showToast(KString.ADD_CART_SUCCESS);
-          //隐藏弹出框
-          Navigator.of(context).pop();
-          //通知刷新
-          eventBus.fire(RefreshEvent());
-        }, );
+        _cartService.addCart(
+          parameters,
+          (value) {
+            ToastUtil.showToast(KString.ADD_CART_SUCCESS);
+            //隐藏弹出框
+            Navigator.of(context).pop();
+            //通知刷新
+            eventBus.fire(RefreshEvent());
+          },
+        );
       } else {
         //如果没有token值跳转至登录框
         NavigatorUtil.goLogin(context);
@@ -451,10 +443,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   //商品名称
                   Text(
                     _goodsDetail.info.name,
-                    style: TextStyle(
-                        fontSize: 16.0,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 6.0),
@@ -472,10 +461,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       //商品原价
                       Text(
                         "原价：${_goodsDetail.info.counterPrice}",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12.0,
-                            decoration: TextDecoration.lineThrough),
+                        style: TextStyle(color: Colors.grey, fontSize: 12.0, decoration: TextDecoration.lineThrough),
                       ),
                       Padding(
                         padding: EdgeInsets.only(left: 10.0),
@@ -483,8 +469,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       //商品现价
                       Text(
                         "现价：${_goodsDetail.info.retailPrice}",
-                        style: TextStyle(
-                            color: Colors.deepOrangeAccent, fontSize: 12.0),
+                        style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 12.0),
                       ),
                     ],
                   ),
@@ -504,10 +489,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                         //商品属于标题
                         Text(
                           KString.GOODS_ATTRIBUTES,
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black54, fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 6.0),
@@ -529,10 +511,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                         //常见问题标题
                         Text(
                           KString.COMMON_PROBLEM,
-                          style: TextStyle(
-                              color: Colors.black54,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black54, fontSize: 20.0, fontWeight: FontWeight.bold),
                         ),
                         Padding(
                           padding: EdgeInsets.only(top: 6.0),
@@ -567,8 +546,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
   Widget _attributeItemWidget(AttributeModel attribute) {
     return Container(
         margin: EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 6),
-        decoration: BoxDecoration(
-            color: Colors.grey[100], borderRadius: BorderRadius.circular(10.0)),
+        decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10.0)),
         padding: EdgeInsets.all(6.0),
         //水平布局
         child: Row(

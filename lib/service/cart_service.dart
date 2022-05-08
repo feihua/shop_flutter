@@ -1,21 +1,22 @@
 //service/cart_service.dart文件
 import 'package:dio/dio.dart';
-import 'package:shop_flutter/utils/http_util.dart';
-import 'package:shop_flutter/config/server_url.dart';
 import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/config/server_url.dart';
 import 'package:shop_flutter/model/cart_list_model.dart';
 import 'package:shop_flutter/model/fill_in_order_model.dart';
+import 'package:shop_flutter/utils/http_util.dart';
+
 //定义成功返回列表数据
 typedef OnSuccessList<T>(List<T> list);
 //定义成功返回数据
 typedef OnSuccess<T>(T t);
 //定义返回失败消息
 typedef OnFail(String message);
+
 //购物车数据服务
 class CartService {
-
   //添加商品至购物车
-  Future addCart(Map<String, dynamic> parameters, OnSuccess onSuccess, {OnFail onFail, Options options}) async {
+  Future addCart(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail, Options? options) async {
     try {
       var response;
       if (options == null) {
@@ -38,7 +39,7 @@ class CartService {
   }
 
   //查询购物车列表数据,购物车页面使用此方法
-  Future queryCart(OnSuccess onSuccess, {OnFail onFail, Options options}) async {
+  Future queryCart(OnSuccess onSuccess, OnFail onFail, Options options) async {
     try {
       var response;
       response = await HttpUtil.instance.get(ServerUrl.CART_LIST, options: options);
@@ -61,7 +62,7 @@ class CartService {
   Future deleteCart(OnSuccess onSuccess, OnFail onFail, Map<String, dynamic> parameters) async {
     try {
       var response;
-      response = await HttpUtil.instance.post(ServerUrl.CART_DELETE,  parameters: parameters);
+      response = await HttpUtil.instance.post(ServerUrl.CART_DELETE, parameters: parameters);
       if (response['errno'] == 0) {
         //删除成功返回成功消息
         onSuccess(KString.SUCCESS);
@@ -98,7 +99,7 @@ class CartService {
   //购物车商品勾选处理
   Future cartCheck(OnSuccess onSuccess, OnFail onFail, Map<String, dynamic> parameters) async {
     try {
-      var response = await HttpUtil.instance.post(ServerUrl.CART_CHECK,parameters: parameters);
+      var response = await HttpUtil.instance.post(ServerUrl.CART_CHECK, parameters: parameters);
       if (response['errno'] == 0) {
         //将返回的Json数据转换成购物车列表数据
         CartListModel cartList = CartListModel.fromJson(response['data']);
@@ -134,9 +135,16 @@ class CartService {
   }
 
   //立即购买
-  Future fastBuy(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail,) async {
+  Future fastBuy(
+    Map<String, dynamic> parameters,
+    OnSuccess onSuccess,
+    OnFail onFail,
+  ) async {
     try {
-      var response = await HttpUtil.instance.post(ServerUrl.FAST_BUY, parameters: parameters,);
+      var response = await HttpUtil.instance.post(
+        ServerUrl.FAST_BUY,
+        parameters: parameters,
+      );
       if (response['errno'] == 0) {
         //购买成功返回数据
         onSuccess(response["data"]);
@@ -150,5 +158,4 @@ class CartService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
-
 }

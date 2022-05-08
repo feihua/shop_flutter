@@ -12,15 +12,11 @@ OrderListModel _$OrderListModelFromJson(Map<String, dynamic> json) {
     json['pages'] as int,
     json['limit'] as int,
     json['page'] as int,
-    (json['list'] as List)
-        ?.map((e) =>
-            e == null ? null : OrderModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['list'] as List)?.map((e) => e == null ? null : OrderModel.fromJson(e as Map<String, dynamic>))?.toList(),
   );
 }
 
-Map<String, dynamic> _$OrderListModelToJson(OrderListModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderListModelToJson(OrderListModel instance) => <String, dynamic>{
       'total': instance.total,
       'pages': instance.pages,
       'limit': instance.limit,
@@ -34,16 +30,13 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) {
     json['orderSn'] as String,
     (json['actualPrice'] as num)?.toDouble(),
     (json['goodsList'] as List)
-        ?.map((e) => e == null
-            ? null
-            : OrderGoodsModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : OrderGoodsModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     json['id'] as int,
   );
 }
 
-Map<String, dynamic> _$OrderModelToJson(OrderModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderModelToJson(OrderModel instance) => <String, dynamic>{
       'orderStatusText': instance.orderStatusText,
       'orderSn': instance.orderSn,
       'actualPrice': instance.actualPrice,
@@ -62,8 +55,7 @@ OrderGoodsModel _$OrderGoodsModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$OrderGoodsModelToJson(OrderGoodsModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderGoodsModelToJson(OrderGoodsModel instance) => <String, dynamic>{
       'number': instance.number,
       'picUrl': instance.picUrl,
       'price': instance.price,

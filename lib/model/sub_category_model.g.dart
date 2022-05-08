@@ -23,8 +23,7 @@ SubCategoryModel _$SubCategoryModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SubCategoryModelToJson(SubCategoryModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$SubCategoryModelToJson(SubCategoryModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'keywords': instance.keywords,

@@ -1,9 +1,9 @@
 //page/category/first_category.dart文件
 import 'package:flutter/material.dart';
-import 'package:shop_flutter/model/first_category_model.dart';
-import 'package:shop_flutter/event/category_event.dart';
-import 'package:shop_flutter/service/category_service.dart';
 import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/event/category_event.dart';
+import 'package:shop_flutter/model/first_category_model.dart';
+import 'package:shop_flutter/service/category_service.dart';
 
 //一级分类组件
 class FirstCategoryWidget extends StatefulWidget {
@@ -14,8 +14,10 @@ class FirstCategoryWidget extends StatefulWidget {
 class _FirstCategoryWidgetState extends State<FirstCategoryWidget> {
   //分类数据服务
   CategoryService categoryService = CategoryService();
+
   //一级分类数据列表
-  List<FirstCategoryModel> firstCategoryList = List();
+  List<FirstCategoryModel> firstCategoryList = [];
+
   //当前分类选择索引
   int _selectIndex = 0;
 
@@ -53,10 +55,8 @@ class _FirstCategoryWidgetState extends State<FirstCategoryWidget> {
       _selectIndex = index;
     });
     //触发事件,二级分类监听此事件用于获取二级分类数据
-    eventBus.fire(CategoryEvent(
-        firstCategoryList[index].id,
-        firstCategoryList[index].name,
-        firstCategoryList[index].picUrl));
+    eventBus.fire(
+        CategoryEvent(firstCategoryList[index].id, firstCategoryList[index].name, firstCategoryList[index].picUrl));
   }
 
   //返回一级分类项组件
@@ -78,8 +78,7 @@ class _FirstCategoryWidgetState extends State<FirstCategoryWidget> {
                 child: Text(firstLevelCategory.name,
                     //判断索引是否为当前选择的索引
                     style: index == _selectIndex
-                        ? TextStyle(
-                            fontSize: 14.0, color: KColor.categorySelectedColor)
+                        ? TextStyle(fontSize: 14.0, color: KColor.categorySelectedColor)
                         : TextStyle(fontSize: 14.0, color: KColor.categoryDefaultColor)),
               ),
               //分类分割线

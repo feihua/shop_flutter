@@ -1,12 +1,13 @@
 //service/goods_service.dart文件
-import 'package:shop_flutter/utils/http_util.dart';
-import 'package:shop_flutter/config/server_url.dart';
-import 'package:shop_flutter/model/goods_model.dart';
-import 'package:shop_flutter/model/goods_detail_model.dart';
 import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/config/server_url.dart';
 import 'package:shop_flutter/model/category_title_model.dart';
+import 'package:shop_flutter/model/goods_detail_model.dart';
+import 'package:shop_flutter/model/goods_model.dart';
+import 'package:shop_flutter/utils/http_util.dart';
+
 //定义成功返回列表数据
-typedef OnSuccessList<T>(List<T> list);
+typedef OnSuccessList<T>(List<T?>? list);
 //定义成功返回数据
 typedef OnSuccess<T>(T t);
 //定义返回失败消息
@@ -32,8 +33,9 @@ class GoodsService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
+
   //获取商品列表数据,参数为分类id
-  Future getGoodsList(Map<String, dynamic> parameters, OnSuccessList onSuccessList, {OnFail onFail}) async {
+  Future getGoodsList(Map<String, dynamic> parameters, OnSuccessList onSuccessList, OnFail onFail) async {
     try {
       var responseList = [];
       var response = await HttpUtil.instance.get(ServerUrl.GOODS_LIST, parameters: parameters);
@@ -53,8 +55,9 @@ class GoodsService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
+
   //获取商品详情数据,参数为商品id
-  Future getGoodsDetailData(Map<String, dynamic> parameters, OnSuccess onSuccess, {OnFail onFail}) async {
+  Future getGoodsDetailData(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail) async {
     try {
       var response = await HttpUtil.instance.get(ServerUrl.GOODS_DETAILS_URL, parameters: parameters);
       if (response['errno'] == 0) {

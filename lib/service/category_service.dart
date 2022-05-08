@@ -1,10 +1,11 @@
 //service/category_service.dart文件
-import 'package:shop_flutter/utils/http_util.dart';
 import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/model/first_category_model.dart';
 import 'package:shop_flutter/model/sub_category_model.dart';
+import 'package:shop_flutter/utils/http_util.dart';
+
 //定义成功返回列表数据
-typedef OnSuccessList<T>(List<T> list);
+typedef OnSuccessList<T>(List<T?>? list);
 //定义成功返回数据
 typedef OnSuccess<T>(T t);
 //定义返回失败消息
@@ -12,9 +13,8 @@ typedef OnFail(String message);
 
 //分类数据服务
 class CategoryService {
-
   //获取一级分类数据,传入回调方法,不需要传入参数
-  Future getFirstCategoryData(OnSuccessList onSuccessList, {OnFail onFail}) async {
+  Future getFirstCategoryData(OnSuccessList onSuccessList, OnFail onFail) async {
     try {
       var responseList = [];
       //请求一级分类数据
@@ -35,12 +35,13 @@ class CategoryService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
+
   //获取二级分类数据,传入分类Id,查询此分类下的所有分类
   Future getSubCategoryData(
       //请求参数,参数为分类Id
       Map<String, dynamic> parameters,
       OnSuccessList onSuccessList,
-      {OnFail onFail}) async {
+      OnFail onFail) async {
     try {
       var responseList = [];
       //查询二级分类数据
@@ -61,6 +62,4 @@ class CategoryService {
       onFail(KString.SERVER_EXCEPTION);
     }
   }
-
-
 }

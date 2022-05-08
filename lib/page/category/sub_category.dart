@@ -1,8 +1,8 @@
 //page/category/sub_category.dart文件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_flutter/model/sub_category_model.dart';
 import 'package:shop_flutter/event/category_event.dart';
+import 'package:shop_flutter/model/sub_category_model.dart';
 import 'package:shop_flutter/service/category_service.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
 
@@ -15,6 +15,7 @@ class SubCategoryWidget extends StatefulWidget {
 class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   //分类数据服务
   CategoryService categoryService = CategoryService();
+
   //二级分类数据列表
   List<SubCategoryModel> subCategoryModels = List();
 
@@ -76,13 +77,15 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
         children: <Widget>[
           //一级分类图片容器
           Container(
-            padding: EdgeInsets.all(ScreenUtil.instance.setWidth(20.0)),
-            height: ScreenUtil.instance.setHeight(200.0),
+            padding: EdgeInsets.all(ScreenUtil().setWidth(20.0)),
+            height: ScreenUtil().setHeight(200.0),
             //一级分类图片
-            child: categoryImage != null ? Image.network(
-              categoryImage,
-              fit: BoxFit.fill,
-            ) : Container(),
+            child: categoryImage != null
+                ? Image.network(
+                    categoryImage,
+                    fit: BoxFit.fill,
+                  )
+                : Container(),
           ),
           Padding(
             padding: EdgeInsets.only(top: 4.0),
@@ -121,7 +124,7 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
 
   //点击二级分类项,导航至分类商品列表页面
   _itemClick(int id) {
-    NavigatorUtil.goCategoryGoodsListPage(context,categoryName,id);
+    NavigatorUtil.goCategoryGoodsListPage(context, categoryName, id);
   }
 
   //二级分类项组件

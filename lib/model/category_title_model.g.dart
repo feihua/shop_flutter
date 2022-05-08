@@ -8,24 +8,15 @@ part of 'category_title_model.dart';
 
 CategoryTitleModel _$CategoryTitleModelFromJson(Map<String, dynamic> json) {
   return CategoryTitleModel(
-    json['currentCategory'] == null
-        ? null
-        : CategoryModel.fromJson(
-            json['currentCategory'] as Map<String, dynamic>),
+    json['currentCategory'] == null ? null : CategoryModel.fromJson(json['currentCategory'] as Map<String, dynamic>),
     (json['brotherCategory'] as List)
-        ?.map((e) => e == null
-            ? null
-            : CategoryModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : CategoryModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['parentCategory'] == null
-        ? null
-        : CategoryModel.fromJson(
-            json['parentCategory'] as Map<String, dynamic>),
+    json['parentCategory'] == null ? null : CategoryModel.fromJson(json['parentCategory'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$CategoryTitleModelToJson(CategoryTitleModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CategoryTitleModelToJson(CategoryTitleModel instance) => <String, dynamic>{
       'currentCategory': instance.currentCategory,
       'brotherCategory': instance.brotherCategory,
       'parentCategory': instance.parentCategory,
@@ -48,8 +39,7 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CategoryModelToJson(CategoryModel instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'keywords': instance.keywords,

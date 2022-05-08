@@ -10,8 +10,10 @@ typedef OnNumberChange(int number);
 class CartNumberWidget extends StatefulWidget {
   //数量改变回调方法
   OnNumberChange onNumberChange;
+
   //计数
   var _number;
+
   //构造方法,传入初始值及回调方法
   CartNumberWidget(this._number, this.onNumberChange);
 
@@ -22,8 +24,9 @@ class CartNumberWidget extends StatefulWidget {
 class _CartNumberWidgetState extends State<CartNumberWidget> {
   //商品数量
   var goodsNumber;
+
   //回调方法
-  OnNumberChange onNumberChange;
+  late OnNumberChange onNumberChange;
 
   @override
   void initState() {
@@ -31,6 +34,7 @@ class _CartNumberWidgetState extends State<CartNumberWidget> {
     goodsNumber = widget._number;
     onNumberChange = widget.onNumberChange;
   }
+
   //监听数量改变事件
   _listener() {
     cartNumberEventBus.on<CartNumberEvent>().listen((CartNumberEvent cartNumberEvent) {
@@ -47,38 +51,36 @@ class _CartNumberWidgetState extends State<CartNumberWidget> {
     _listener();
     return Container(
       //设置宽高
-      width: ScreenUtil.instance.setWidth(150),
-      height: ScreenUtil.instance.setWidth(50),
+      width: ScreenUtil().setWidth(150),
+      height: ScreenUtil().setWidth(50),
       //水平布局
       child: Row(
         children: <Widget>[
           InkWell(
-            //减少
-            onTap: () => _reduce(),
-            child: Container(
-              width: ScreenUtil.instance.setWidth(50),
-              height: double.infinity,
-              alignment: Alignment.center,
-              //添加边框样式
-              decoration: ShapeDecoration(
-                  shape: Border(
-                      left: BorderSide(color: Colors.grey, width: 1.0),
-                      top: BorderSide(color: Colors.grey, width: 1.0),
-                      right: BorderSide(color: Colors.grey, width: 1.0),
-                      bottom: BorderSide(color: Colors.grey, width: 1.0))),
-              //减少符号
-              child: Text(
-                "-",
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: ScreenUtil.instance.setSp(26.0)),
-              ),
-            )),
+              //减少
+              onTap: () => _reduce(),
+              child: Container(
+                width: ScreenUtil().setWidth(50),
+                height: double.infinity,
+                alignment: Alignment.center,
+                //添加边框样式
+                decoration: ShapeDecoration(
+                    shape: Border(
+                        left: BorderSide(color: Colors.grey, width: 1.0),
+                        top: BorderSide(color: Colors.grey, width: 1.0),
+                        right: BorderSide(color: Colors.grey, width: 1.0),
+                        bottom: BorderSide(color: Colors.grey, width: 1.0))),
+                //减少符号
+                child: Text(
+                  "-",
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
+                ),
+              )),
           //中间数量容器
           Container(
             alignment: Alignment.center,
             height: double.infinity,
-            width: ScreenUtil.instance.setWidth(50),
+            width: ScreenUtil().setWidth(50),
             //添加边框样式
             decoration: ShapeDecoration(
                 shape: Border(
@@ -87,33 +89,29 @@ class _CartNumberWidgetState extends State<CartNumberWidget> {
             //商品数量
             child: Text(
               "${goodsNumber}",
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(26.0)),
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
             ),
           ),
           InkWell(
-            //增加
-            onTap: () => _add(),
-            child: Container(
-              alignment: Alignment.center,
-              width: ScreenUtil.instance.setWidth(50),
-              height: double.infinity,
-              //添加边框样式
-              decoration: ShapeDecoration(
-                  shape: Border(
-                      left: BorderSide(color: Colors.grey, width: 1.0),
-                      top: BorderSide(color: Colors.grey, width: 1.0),
-                      right: BorderSide(color: Colors.grey, width: 1.0),
-                      bottom: BorderSide(color: Colors.grey, width: 1.0))),
-              //增加符号
-              child: Text(
-                "+",
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: ScreenUtil.instance.setSp(26.0)),
-              ),
-            )),
+              //增加
+              onTap: () => _add(),
+              child: Container(
+                alignment: Alignment.center,
+                width: ScreenUtil().setWidth(50),
+                height: double.infinity,
+                //添加边框样式
+                decoration: ShapeDecoration(
+                    shape: Border(
+                        left: BorderSide(color: Colors.grey, width: 1.0),
+                        top: BorderSide(color: Colors.grey, width: 1.0),
+                        right: BorderSide(color: Colors.grey, width: 1.0),
+                        bottom: BorderSide(color: Colors.grey, width: 1.0))),
+                //增加符号
+                child: Text(
+                  "+",
+                  style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
+                ),
+              )),
         ],
       ),
     );

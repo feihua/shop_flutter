@@ -1,15 +1,17 @@
 //page/goods/goods_list_page.dart文件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shop_flutter/service/goods_service.dart';
-import 'package:shop_flutter/model/goods_model.dart';
 import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/model/goods_model.dart';
+import 'package:shop_flutter/service/goods_service.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
 import 'package:shop_flutter/widgets/cached_image_widget.dart';
+
 //商品列表组件
 class GoodsListPage extends StatefulWidget {
   //二级分类Id
   int categoryId;
+
   //构造方法,传入二级分类Id
   GoodsListPage(this.categoryId);
 
@@ -20,8 +22,10 @@ class GoodsListPage extends StatefulWidget {
 class _GoodsListPageState extends State<GoodsListPage> {
   //商品数据服务
   GoodsService goodsService = GoodsService();
+
   //商品数据模型
   List<GoodsModel> goodsModels = List();
+
   //二级分类Id,用于查询二级分类的商品列表数据
   var categoryId;
 
@@ -29,7 +33,7 @@ class _GoodsListPageState extends State<GoodsListPage> {
   _getGoodsData(int categoryId) {
     goodsService.getGoodsList({"categoryId": categoryId, "page": 1, "limit": 100}, (goodsModelList) {
       //判断当前页面是否存在
-      if(mounted){
+      if (mounted) {
         setState(() {
           goodsModels = goodsModelList;
         });
@@ -55,49 +59,47 @@ class _GoodsListPageState extends State<GoodsListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-          child: goodsModels != null && goodsModels.length != 0
-              ? GridView.builder(
-                  itemCount: goodsModels == null ? 0 : goodsModels.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        body: Container(
+      child: Center(
+        child: goodsModels != null && goodsModels.length != 0
+            ? GridView.builder(
+                itemCount: goodsModels == null ? 0 : goodsModels.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     //两列
                     crossAxisCount: 2,
                     //间距
                     mainAxisSpacing: 6.0,
                     //间距
                     crossAxisSpacing: 6.0,
-                    childAspectRatio: 1.0
-                  ),
-                  //构建商品列表项
-                  itemBuilder: (BuildContext context, int index) {
-                    //返回商品项
-                    return getGoodsItemWidget(goodsModels[index]);
-                  })
-              : Center(
-                  //垂直布局
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      //没有数据图片提示
-                      Image.asset(
-                        "images/no_data.png",
-                        height: 80,
-                        width: 80,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      //没有数据文本提示
-                      Text(
-                        KString.NO_DATA_TEXT,
-                        style: TextStyle(
-                            fontSize: 16.0, color: KColor.noDataTextColor),
-                      )
-                    ],
-                  ),
+                    childAspectRatio: 1.0),
+                //构建商品列表项
+                itemBuilder: (BuildContext context, int index) {
+                  //返回商品项
+                  return getGoodsItemWidget(goodsModels[index]);
+                })
+            : Center(
+                //垂直布局
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    //没有数据图片提示
+                    Image.asset(
+                      "images/no_data.png",
+                      height: 80,
+                      width: 80,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                    ),
+                    //没有数据文本提示
+                    Text(
+                      KString.NO_DATA_TEXT,
+                      style: TextStyle(fontSize: 16.0, color: KColor.noDataTextColor),
+                    )
+                  ],
                 ),
-        ),
+              ),
+      ),
     ));
   }
 
@@ -138,8 +140,7 @@ class _GoodsListPageState extends State<GoodsListPage> {
                     "¥${goodsModel.retailPrice}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 14.0, color: KColor.priceColor),
+                    style: TextStyle(fontSize: 14.0, color: KColor.priceColor),
                   ),
                 ],
               ),

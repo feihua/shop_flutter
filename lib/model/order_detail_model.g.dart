@@ -8,19 +8,14 @@ part of 'order_detail_model.dart';
 
 OrderDetailModel _$OrderDetailModelFromJson(Map<String, dynamic> json) {
   return OrderDetailModel(
-    json['orderInfo'] == null
-        ? null
-        : OrderInfoModel.fromJson(json['orderInfo'] as Map<String, dynamic>),
+    json['orderInfo'] == null ? null : OrderInfoModel.fromJson(json['orderInfo'] as Map<String, dynamic>),
     (json['orderGoods'] as List)
-        ?.map((e) => e == null
-            ? null
-            : OrderDetailGoodsModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : OrderDetailGoodsModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
   );
 }
 
-Map<String, dynamic> _$OrderDetailModelToJson(OrderDetailModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderDetailModelToJson(OrderDetailModel instance) => <String, dynamic>{
       'orderInfo': instance.orderInfo,
       'orderGoods': instance.orderGoods,
     };
@@ -37,14 +32,11 @@ OrderInfoModel _$OrderInfoModelFromJson(Map<String, dynamic> json) {
     (json['goodsPrice'] as num)?.toDouble(),
     json['id'] as int,
     (json['freightPrice'] as num)?.toDouble(),
-    json['handleOption'] == null
-        ? null
-        : HandleOption.fromJson(json['handleOption'] as Map<String, dynamic>),
+    json['handleOption'] == null ? null : HandleOption.fromJson(json['handleOption'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$OrderInfoModelToJson(OrderInfoModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderInfoModelToJson(OrderInfoModel instance) => <String, dynamic>{
       'consignee': instance.consignee,
       'address': instance.address,
       'addTime': instance.addTime,
@@ -58,8 +50,7 @@ Map<String, dynamic> _$OrderInfoModelToJson(OrderInfoModel instance) =>
       'handleOption': instance.handleOption,
     };
 
-OrderDetailGoodsModel _$OrderDetailGoodsModelFromJson(
-    Map<String, dynamic> json) {
+OrderDetailGoodsModel _$OrderDetailGoodsModelFromJson(Map<String, dynamic> json) {
   return OrderDetailGoodsModel(
     json['id'] as int,
     json['orderId'] as int,
@@ -78,9 +69,7 @@ OrderDetailGoodsModel _$OrderDetailGoodsModelFromJson(
   );
 }
 
-Map<String, dynamic> _$OrderDetailGoodsModelToJson(
-        OrderDetailGoodsModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$OrderDetailGoodsModelToJson(OrderDetailGoodsModel instance) => <String, dynamic>{
       'id': instance.id,
       'orderId': instance.orderId,
       'goodsId': instance.goodsId,
@@ -109,8 +98,7 @@ HandleOption _$HandleOptionFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$HandleOptionToJson(HandleOption instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$HandleOptionToJson(HandleOption instance) => <String, dynamic>{
       'cancel': instance.cancel,
       'delete': instance.delete,
       'pay': instance.pay,

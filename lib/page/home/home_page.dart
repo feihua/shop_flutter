@@ -1,18 +1,19 @@
 //home/home_page.dart文件
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_easyrefresh/bezier_bounce_footer.dart';
-import "package:flutter_easyrefresh/easy_refresh.dart";
 import 'package:flutter_easyrefresh/bezier_circle_header.dart';
-import 'package:shop_flutter/service/home_service.dart';
+import "package:flutter_easyrefresh/easy_refresh.dart";
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shop_flutter/config/index.dart';
+import 'package:shop_flutter/model/home_model.dart';
 import 'package:shop_flutter/page/home/home_banner.dart';
 import 'package:shop_flutter/page/home/home_category.dart';
-import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/page/home/home_product.dart';
-import 'package:shop_flutter/model/home_model.dart';
+import 'package:shop_flutter/service/home_service.dart';
+import 'package:shop_flutter/utils/shared_preferences_util.dart';
 import 'package:shop_flutter/utils/toast_util.dart';
 import 'package:shop_flutter/widgets/loading_dialog_widget.dart';
-import 'package:shop_flutter/utils/shared_preferences_util.dart';
+
 //首页
 class HomePage extends StatefulWidget {
   @override
@@ -22,19 +23,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //首页数据接口服务
   HomeService _homeService = HomeService();
+
   //首页数据模型
-  HomeModel _homeModel;
+  late HomeModel _homeModel;
+
   //刷新组件控制器
   EasyRefreshController _controller = EasyRefreshController();
 
   @override
   void initState() {
     super.initState();
-    SharedPreferencesUtil.getToken().then((token){
-    });
+    SharedPreferencesUtil.getToken().then((token) {});
     //查询首页数据
     _queryHomeData();
   }
+
   //查询首页数据
   _queryHomeData() {
     _homeService.queryHomeData((success) {
@@ -53,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     //初始化屏幕适配工具
-    ScreenUtil.instance = ScreenUtil(width: 750, height: 1334)..init(context);
+    ScreenUtil.init(context, designSize: const Size(750, 1334));
     return Scaffold(
         //页面顶部组件
         appBar: AppBar(
@@ -63,11 +66,11 @@ class _HomePageState extends State<HomePage> {
           actions: <Widget>[
             //搜索按钮
             IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                onPressed: (){},
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {},
             )
           ],
         ),
@@ -92,30 +95,29 @@ class _HomePageState extends State<HomePage> {
               //滚动组件,这样首页可以上下滚动
               child: SingleChildScrollView(
                   child: Column(
-                    children: <Widget>[
-                      //轮播图组件
-                      HomeBannerWidget(_homeModel.banner, _homeModel.banner.length,
-                          ScreenUtil.instance.setHeight(360.0)),
-                      Padding(
-                        padding: EdgeInsets.only(top: 10.0),
-                      ),
-                      //首页分类组件
-                      HomeCategoryWidget(_homeModel.channel),
-                      Container(
-                        height: 40.0,
-                        alignment: Alignment.center,
-                        child: Text(KString.NEW_PRODUCT),
-                      ),
-                      //最新产品组件
-                      HomeProductWidget(_homeModel.newGoodsList),
-                      Container(
-                        height: 40.0,
-                        alignment: Alignment.center,
-                        child: Text(KString.HOT_PRODUCT),
-                      ),
-                      //最热产品组件
-                      HomeProductWidget(_homeModel.hotGoodsList),
-                    ],
+                children: <Widget>[
+                  //轮播图组件
+                  HomeBannerWidget(_homeModel?.banner, ScreenUtil().setHeight(360.0)),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                  ),
+                  //首页分类组件
+                  HomeCategoryWidget(_homeModel.channel),
+                  Container(
+                    height: 40.0,
+                    alignment: Alignment.center,
+                    child: Text(KString.NEW_PRODUCT),
+                  ),
+                  //最新产品组件
+                  HomeProductWidget(_homeModel.newGoodsList),
+                  Container(
+                    height: 40.0,
+                    alignment: Alignment.center,
+                    child: Text(KString.HOT_PRODUCT),
+                  ),
+                  //最热产品组件
+                  HomeProductWidget(_homeModel.hotGoodsList),
+                ],
               )),
               //刷新回调方法
               onRefresh: () async {

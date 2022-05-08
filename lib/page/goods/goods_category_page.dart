@@ -1,18 +1,19 @@
 //page/goods/goods_category_page.dart
 import 'package:flutter/material.dart';
+import 'package:shop_flutter/model/category_title_model.dart';
 import 'package:shop_flutter/page/goods/goods_list_page.dart';
 import 'package:shop_flutter/service/goods_service.dart';
-import 'package:shop_flutter/model/category_title_model.dart';
+
 //商品分类页面
 class GoodsCategoryPage extends StatefulWidget {
   //一级分类名称
   String categoryName;
+
   //一级分类Id
   int categoryId;
 
   //构造方法,传入一级分类名称和分类Id
-  GoodsCategoryPage({Key key, @required this.categoryName, @required this.categoryId})
-      : super(key: key);
+  GoodsCategoryPage({Key key, @required this.categoryName, @required this.categoryId}) : super(key: key);
 
   @override
   _GoodsCategoryPageState createState() => _GoodsCategoryPageState();
@@ -20,15 +21,20 @@ class GoodsCategoryPage extends StatefulWidget {
 
 class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProviderStateMixin {
   ScrollController _scrollController;
+
   //二级分类选项卡
   TabController _tabController;
+
   //数据服务
   GoodsService _goodsService = GoodsService();
+
   //分类标题数据模型
   CategoryTitleModel _categoryTitleModel;
+
   //同级(二级)分类数据列表
   List<CategoryModel> brotherCategory = List();
   var categoryFuture;
+
   //当前选中的二级分类索引
   var currentIndex = 0;
 
@@ -76,12 +82,11 @@ class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProvid
             _scrollController = ScrollController();
             //选项卡控制器
             _tabController = TabController(
-              //初始化索引
-              initialIndex: currentIndex,
-              //选项个数
-              length: brotherCategory.length,
-              vsync: this
-            );
+                //初始化索引
+                initialIndex: currentIndex,
+                //选项个数
+                length: brotherCategory.length,
+                vsync: this);
             return Scaffold(
               appBar: AppBar(
                 //一级分类名称

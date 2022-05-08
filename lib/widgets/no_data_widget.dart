@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shop_flutter/config/index.dart';
+
 //没有数据提示组件
 class NoDataWidget extends StatelessWidget {
   @override
@@ -22,19 +23,16 @@ class NoDataWidget extends StatelessWidget {
             //图片提示
             Image.asset(
               "images/no_data.png",
-              height: ScreenUtil.instance.setWidth(120.0),
-              width: ScreenUtil.instance.setWidth(120.0),
+              height: ScreenUtil().setWidth(120.0),
+              width: ScreenUtil().setWidth(120.0),
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  top: ScreenUtil.instance.setHeight(20.0)),
+              padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0)),
             ),
             //文本提示
             Text(
               KString.NO_DATA_TEXT,
-              style: TextStyle(
-                  fontSize: ScreenUtil.instance.setSp(28.0),
-                  color: KColor.defaultTextColor),
+              style: TextStyle(fontSize: ScreenUtil().setSp(28.0), color: KColor.defaultTextColor),
             )
           ],
         ),

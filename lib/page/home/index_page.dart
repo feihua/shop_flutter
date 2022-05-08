@@ -1,9 +1,9 @@
 //page/home/index_page.dart文件
 import 'package:flutter/material.dart';
-import 'package:shop_flutter/page/home/home_page.dart';
 import 'package:shop_flutter/config/index.dart';
-import 'package:shop_flutter/page/category/category_page.dart';
 import 'package:shop_flutter/page/cart/cart_page.dart';
+import 'package:shop_flutter/page/category/category_page.dart';
+import 'package:shop_flutter/page/home/home_page.dart';
 import 'package:shop_flutter/page/mine/mine_page.dart';
 
 //索引页面用于切换几个主要页面
@@ -15,8 +15,9 @@ class IndexPage extends StatefulWidget {
 class _IndexPageState extends State<IndexPage> {
   //当前选项卡索引
   int _selectedIndex = 0;
+
   //主要页面列表
-  List<Widget> _list = List();
+  List<Widget> _list = <Widget>[];
 
   @override
   void initState() {
@@ -54,22 +55,22 @@ class _IndexPageState extends State<IndexPage> {
           //首页
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text(KString.HOME),
+            label: KString.HOME,
           ),
           //分类
           BottomNavigationBarItem(
             icon: Icon(Icons.category),
-            title: Text(KString.CATEGORY),
+            label: KString.CATEGORY,
           ),
           //购物车
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            title: Text(KString.SHOP_CAR),
+            label: KString.SHOP_CAR,
           ),
           //我的
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            title: Text(KString.MINE),
+            label: KString.MINE,
           ),
         ],
         //绑定当前索引

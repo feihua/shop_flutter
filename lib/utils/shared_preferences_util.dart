@@ -5,15 +5,14 @@ import 'package:shop_flutter/config/index.dart';
 //本地存储工具
 class SharedPreferencesUtil {
   //token字符串
-  static String token = "";
+  static String? token;
 
   //获取token值
   static Future getToken() async {
-    if (token == null || token.isEmpty) {
+    if (token == null) {
       //从本地取出token值
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-      token = sharedPreferences.getString(KString.TOKEN) ?? null;
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      token = sharedPreferences.getString(KString.TOKEN);
     }
     return token;
   }

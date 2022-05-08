@@ -38,7 +38,9 @@ dependencies:
   #刷新组件
   flutter_easyrefresh: ^2.2.1
   #加载网页插件
-#  flutter_webview_plugin: ^0.4.0
+  #  flutter_webview_plugin: ^0.4.0
+  #  webview_flutter: ^3.0.2
+  #  webview_flutter_plus: ^0.3.0+2
   #图片缓存组件
   cached_network_image: ^3.2.0
   #苹果风格图标

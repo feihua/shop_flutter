@@ -8,27 +8,18 @@ part of 'goods_detail_model.dart';
 
 GoodsDetailModel _$GoodsDetailModelFromJson(Map<String, dynamic> json) {
   return GoodsDetailModel(
-    (json['issue'] as List)
-        ?.map((e) =>
-            e == null ? null : IssueModel.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    (json['issue'] as List)?.map((e) => e == null ? null : IssueModel.fromJson(e as Map<String, dynamic>))?.toList(),
     (json['attribute'] as List)
-        ?.map((e) => e == null
-            ? null
-            : AttributeModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : AttributeModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
     (json['productList'] as List)
-        ?.map((e) =>
-            e == null ? null : ProductModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => e == null ? null : ProductModel.fromJson(e as Map<String, dynamic>))
         ?.toList(),
-    json['info'] == null
-        ? null
-        : InfoModel.fromJson(json['info'] as Map<String, dynamic>),
+    json['info'] == null ? null : InfoModel.fromJson(json['info'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$GoodsDetailModelToJson(GoodsDetailModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$GoodsDetailModelToJson(GoodsDetailModel instance) => <String, dynamic>{
       'issue': instance.issue,
       'attribute': instance.attribute,
       'productList': instance.productList,
@@ -46,8 +37,7 @@ IssueModel _$IssueModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$IssueModelToJson(IssueModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$IssueModelToJson(IssueModel instance) => <String, dynamic>{
       'id': instance.id,
       'question': instance.question,
       'answer': instance.answer,
@@ -68,8 +58,7 @@ AttributeModel _$AttributeModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$AttributeModelToJson(AttributeModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$AttributeModelToJson(AttributeModel instance) => <String, dynamic>{
       'id': instance.id,
       'goodsId': instance.goodsId,
       'attribute': instance.attribute,
@@ -93,8 +82,7 @@ ProductModel _$ProductModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ProductModelToJson(ProductModel instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$ProductModelToJson(ProductModel instance) => <String, dynamic>{
       'id': instance.id,
       'goodsId': instance.goodsId,
       'specifications': instance.specifications,

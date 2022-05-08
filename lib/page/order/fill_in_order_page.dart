@@ -1,22 +1,24 @@
 //page/order/fill_in_order_page.dart文件
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:dio/dio.dart';
 import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/model/fill_in_order_model.dart';
-import 'package:shop_flutter/widgets/item_text_widget.dart';
-import 'package:shop_flutter/utils/shared_preferences_util.dart';
-import 'package:shop_flutter/utils/navigator_util.dart';
-import 'package:shop_flutter/utils/fluro_convert_util.dart';
-import 'package:shop_flutter/utils/toast_util.dart';
-import 'package:shop_flutter/widgets/cached_image_widget.dart';
 import 'package:shop_flutter/service/cart_service.dart';
 import 'package:shop_flutter/service/order_service.dart';
+import 'package:shop_flutter/utils/fluro_convert_util.dart';
+import 'package:shop_flutter/utils/navigator_util.dart';
+import 'package:shop_flutter/utils/shared_preferences_util.dart';
+import 'package:shop_flutter/utils/toast_util.dart';
+import 'package:shop_flutter/widgets/cached_image_widget.dart';
+import 'package:shop_flutter/widgets/item_text_widget.dart';
+
 //填写订单页面
 class FillInOrderPage extends StatefulWidget {
   //购物车Id
   var cartId;
+
   //构造方法,传入购物车Id
   FillInOrderPage(this.cartId);
 
@@ -26,17 +28,23 @@ class FillInOrderPage extends StatefulWidget {
 
 class _FillInOrderPageState extends State<FillInOrderPage> {
   //填写订单数据模型
-  FillInOrderModel _fillInOrderModel;
+  late FillInOrderModel _fillInOrderModel;
+
   //订单数据服务
   OrderService _orderService = OrderService();
+
   //购物车数据服务
   CartService _cartService = CartService();
+
   //文本编辑控制器
   TextEditingController _controller = TextEditingController();
+
   //Token值
   var token;
+
   //填写订单的Futurre对象
-  Future fillInOrderFuture;
+  late Future fillInOrderFuture;
+
   //Dio的Options对象
   Options options = Options();
 
@@ -94,7 +102,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                     child: Text(
                       KString.SERVER_EXCEPTION,
                       style: TextStyle(
-                        fontSize: ScreenUtil.instance.setSp(26.0),
+                        fontSize: ScreenUtil().setSp(26.0),
                       ),
                     ),
                   ),
@@ -120,35 +128,33 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
             //收货地址
             _addressWidget(),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
             ),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
             ),
             //备注
             _remarkWidget(),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
             ),
             //总价
-            ItemTextWidget(
-                KString.GOODS_TOTAL, "¥${_fillInOrderModel.goodsTotalPrice}"),
+            ItemTextWidget(KString.GOODS_TOTAL, "¥${_fillInOrderModel.goodsTotalPrice}"),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey,
             ),
             //运费
-            ItemTextWidget(
-                KString.FREIGHT, "¥${_fillInOrderModel.freightPrice}"),
+            ItemTextWidget(KString.FREIGHT, "¥${_fillInOrderModel.freightPrice}"),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
             ),
             Divider(
-              height: ScreenUtil.instance.setHeight(1.0),
+              height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
             ),
             //购物车选中的商品
@@ -161,27 +167,24 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
       //底部组件
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          margin: EdgeInsets.only(left: ScreenUtil.instance.setWidth(20.0)),
-          height: ScreenUtil.instance.setHeight(100.0),
+          margin: EdgeInsets.only(left: ScreenUtil().setWidth(20.0)),
+          height: ScreenUtil().setHeight(100.0),
           child: Row(
             children: <Widget>[
               //实付价格
-              Expanded(
-                  child: Text("实付：¥${_fillInOrderModel.orderTotalPrice}")),
+              Expanded(child: Text("实付：¥${_fillInOrderModel.orderTotalPrice}")),
               InkWell(
                 //提交订单
                 onTap: () => _submitOrder(),
                 child: Container(
                   alignment: Alignment.center,
-                  width: ScreenUtil.instance.setWidth(200.0),
+                  width: ScreenUtil().setWidth(200.0),
                   height: double.infinity,
                   color: KColor.buyButtonColor,
                   child: Text(
                     //付款标题
                     KString.PAY,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil.instance.setSp(28.0)),
+                    style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(28.0)),
                   ),
                 ),
               )
@@ -199,7 +202,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
     for (int i = 0; i < goods.length; i++) {
       list.add(_goodsItem(goods[i]));
       list.add(Divider(
-        height: ScreenUtil.instance.setHeight(1.0),
+        height: ScreenUtil().setHeight(1.0),
         color: Colors.grey[350],
       ));
     }
@@ -209,19 +212,16 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
   //商品列表项
   Widget _goodsItem(CheckedGoodsModel checkedGoods) {
     return Container(
-      padding: EdgeInsets.only(
-          left: ScreenUtil.instance.setWidth(20.0),
-          right: ScreenUtil.instance.setWidth(20.0)),
-      height: ScreenUtil.instance.setHeight(180.0),
+      padding: EdgeInsets.only(left: ScreenUtil().setWidth(20.0), right: ScreenUtil().setWidth(20.0)),
+      height: ScreenUtil().setHeight(180.0),
       //水平布局
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           //商品图片
-          CachedImageWidget(ScreenUtil.instance.setWidth(140),
-              ScreenUtil.instance.setWidth(140), checkedGoods.picUrl),
+          CachedImageWidget(ScreenUtil().setWidth(140), ScreenUtil().setWidth(140), checkedGoods.picUrl),
           Padding(
-            padding: EdgeInsets.only(left: ScreenUtil.instance.setWidth(10.0)),
+            padding: EdgeInsets.only(left: ScreenUtil().setWidth(10.0)),
           ),
           //垂直布局
           Column(
@@ -231,38 +231,28 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
               //商品名称
               Text(
                 checkedGoods.goodsName,
-                style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: ScreenUtil.instance.setSp(26.0)),
+                style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
               ),
-              Padding(
-                  padding:
-                      EdgeInsets.only(top: ScreenUtil.instance.setHeight(6.0))),
+              Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(6.0))),
               //商品规格
               Text(
                 checkedGoods.specifications[0],
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: ScreenUtil.instance.setSp(22.0)),
+                style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(22.0)),
               ),
-              Padding(
-                  padding: EdgeInsets.only(
-                      top: ScreenUtil.instance.setHeight(20.0))),
+              Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0))),
               //商品单价
               Text(
                 "¥${checkedGoods.price}",
-                style: TextStyle(
-                    color: Colors.deepOrangeAccent,
-                    fontSize: ScreenUtil.instance.setSp(26.0)),
+                style: TextStyle(color: Colors.deepOrangeAccent, fontSize: ScreenUtil().setSp(26.0)),
               )
             ],
           ),
           //商品数量
           Expanded(
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: Text("X${checkedGoods.number}"),
-              ),
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: Text("X${checkedGoods.number}"),
+            ),
           ),
         ],
       ),
@@ -272,13 +262,13 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
   //备注组件
   Widget _remarkWidget() {
     return Container(
-      height: ScreenUtil.instance.setHeight(80),
+      height: ScreenUtil().setHeight(80),
       width: double.infinity,
       alignment: Alignment.center,
-      margin: EdgeInsets.only(top: ScreenUtil.instance.setHeight(10.0)),
+      margin: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
       padding: EdgeInsets.only(
-          left: ScreenUtil.instance.setWidth(20.0),
-          right: ScreenUtil.instance.setWidth(20.0),
+        left: ScreenUtil().setWidth(20.0),
+        right: ScreenUtil().setWidth(20.0),
       ),
       //水平布局
       child: Row(
@@ -287,18 +277,14 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
           Text(
             //备注标签
             KString.REMARK,
-            style: TextStyle(
-                color: Colors.black54,
-                fontSize: ScreenUtil.instance.setSp(26.0)),
+            style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
           ),
           //左侧间距
           Expanded(
               child: Container(
-                margin: EdgeInsets.only(
-                    left: ScreenUtil.instance.setWidth(10.0)
-                ),
-                height: ScreenUtil.instance.setHeight(80.0),
-                alignment: Alignment.centerLeft,
+            margin: EdgeInsets.only(left: ScreenUtil().setWidth(10.0)),
+            height: ScreenUtil().setHeight(80.0),
+            alignment: Alignment.centerLeft,
             //备注
             child: TextField(
               maxLines: 1,
@@ -306,22 +292,14 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
               decoration: InputDecoration(
                 //提示填写备注
                 hintText: KString.REMARK,
-                hintStyle: TextStyle(
-                    color: Colors.grey[350],
-                    fontSize: ScreenUtil.instance.setSp(26.0)),
+                hintStyle: TextStyle(color: Colors.grey[350], fontSize: ScreenUtil().setSp(26.0)),
                 hasFloatingPlaceholder: false,
                 enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: ScreenUtil.instance.setHeight(1.0))),
+                    borderSide: BorderSide(color: Colors.transparent, width: ScreenUtil().setHeight(1.0))),
                 focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: ScreenUtil.instance.setHeight(1.0))),
+                    borderSide: BorderSide(color: Colors.transparent, width: ScreenUtil().setHeight(1.0))),
               ),
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: ScreenUtil.instance.setSp(26.0)),
+              style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
               controller: _controller,
             ),
           ))
@@ -333,11 +311,9 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
   //地址组件
   Widget _addressWidget() {
     return Container(
-      height: ScreenUtil.instance.setHeight(120.0),
-      margin: EdgeInsets.all(ScreenUtil.instance.setWidth(10.0)),
-      padding: EdgeInsets.only(
-          left: ScreenUtil.instance.setWidth(20.0),
-          right: ScreenUtil.instance.setWidth(20.0)),
+      height: ScreenUtil().setHeight(120.0),
+      margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
+      padding: EdgeInsets.only(left: ScreenUtil().setWidth(20.0), right: ScreenUtil().setWidth(20.0)),
       child: _fillInOrderModel.checkedAddress.id != 0
           ? InkWell(
               onTap: () {
@@ -368,26 +344,20 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                           //联系人名称
                           Text(
                             _fillInOrderModel.checkedAddress.name,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: ScreenUtil.instance.setSp(28.0)),
+                            style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
-                                left: ScreenUtil.instance.setHeight(20.0)),
+                            padding: EdgeInsets.only(left: ScreenUtil().setHeight(20.0)),
                           ),
                           //联系人电话
                           Text(
                             _fillInOrderModel.checkedAddress.tel,
-                            style: TextStyle(
-                                color: Colors.black54,
-                                fontSize: ScreenUtil.instance.setSp(26.0)),
+                            style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                           ),
                         ],
                       ),
                       Padding(
-                        padding: EdgeInsets.only(
-                            top: ScreenUtil.instance.setHeight(10.0)),
+                        padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
                       ),
                       //联系人地址信息
                       Text(
@@ -395,9 +365,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                             _fillInOrderModel.checkedAddress.city +
                             _fillInOrderModel.checkedAddress.county +
                             _fillInOrderModel.checkedAddress.addressDetail,
-                        style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: ScreenUtil.instance.setSp(26.0)),
+                        style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                       ),
                     ],
                   ),
@@ -425,9 +393,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                   //选择地址标题
                   Text(
                     KString.PLEASE_SELECT_ADDRESS,
-                    style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: ScreenUtil.instance.setSp(30.0)),
+                    style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(30.0)),
                   ),
                   Expanded(
                       child: Container(
