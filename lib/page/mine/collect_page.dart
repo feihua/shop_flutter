@@ -20,7 +20,7 @@ class _CollectPageState extends State<CollectPage> {
   CollectService _collectService = CollectService();
 
   //收藏列表
-  List<CollectModel> _collects = List();
+  List<CollectModel> _collects = <CollectModel>[];
 
   //token值
   var token;
@@ -51,7 +51,7 @@ class _CollectPageState extends State<CollectPage> {
     var parameters = {"type": _type, "page": _page, "limit": _limit};
     _collectService.queryCollect(parameters, (successList) {
       setState(() {
-        _collects = successList;
+        _collects = successList!.cast<CollectModel>();
       });
     }, (error) {
       ToastUtil.showToast(error);

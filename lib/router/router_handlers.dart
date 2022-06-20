@@ -26,7 +26,7 @@ var homeHandler = Handler(handlerFunc: (BuildContext? context, Map<String, List<
 var loadingHandler = Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> parameters) {
   return LoadingPage();
 });
-
+//
 //商品列表
 var categoryGoodsListHandler = Handler(handlerFunc: (BuildContext? context, Map<String, List<Object>> parameters) {
   //分类名称
@@ -39,7 +39,11 @@ var categoryGoodsListHandler = Handler(handlerFunc: (BuildContext? context, Map<
   // //分类Id
   // var categoryId = int.parse(parameters["categoryId"].first);
   // return GoodsCategoryPage(categoryName: cateforyName, categoryId: categoryId
-  return GoodsCategoryPage(categoryName: "cateforyName", categoryId: 22);
+  return GoodsCategoryPage(
+    categoryName: "cateforyName",
+    categoryId: 22,
+    key: Key(""),
+  );
 });
 
 //注册

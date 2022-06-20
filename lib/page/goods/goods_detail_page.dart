@@ -20,10 +20,10 @@ import 'package:shop_flutter/widgets/cart_number_widget.dart';
 //商品详情页面
 class GoodsDetailPage extends StatefulWidget {
   //商品Id
-  int goodsId;
+  int goodsId = 0;
 
   //构造方法,商品Id为必传参数
-  GoodsDetailPage({Key key, @required this.goodsId}) : super(key: key);
+  GoodsDetailPage({Key? key, required this.goodsId}) : super(key: key);
 
   @override
   _GoodsDetailPageState createState() => _GoodsDetailPageState();
@@ -31,7 +31,7 @@ class GoodsDetailPage extends StatefulWidget {
 
 class _GoodsDetailPageState extends State<GoodsDetailPage> {
   //商品Id
-  int goodsId;
+  int goodsId = 0;
 
   //商品数据服务
   GoodsService _goodsService = GoodsService();
@@ -43,7 +43,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
   CollectService _collectService = CollectService();
 
   //商品详情数据模型
-  GoodsDetailModel _goodsDetail;
+  late GoodsDetailModel _goodsDetail;
 
   //参数对象
   var parameters;
@@ -73,7 +73,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
     //获取商品详情数据
     _goodsDetailFuture = _goodsService.getGoodsDetailData(params, (goodsDetail) {
       _goodsDetail = goodsDetail;
-    });
+    }, (good) {});
   }
 
   @override
@@ -158,7 +158,8 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       color: KColor.addCartButtonColor,
                       child: InkWell(
                           //打开底部弹出框
-                          onTap: () => openBottomSheet(context, _goodsDetail.productList[0], 1),
+                          onTap: () => openBottomSheet(context,
+                              _goodsDetail.productList![0] ?? ProductModel(1, 1, [], 1, 1, "1", "1", "", true), 1),
                           child: Center(
                             child: Text(
                               KString.ADD_CART,
@@ -173,7 +174,8 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       color: KColor.buyButtonColor,
                       child: InkWell(
                           //打开底部弹出框
-                          onTap: () => openBottomSheet(context, _goodsDetail.productList[0], 2),
+                          onTap: () => openBottomSheet(context,
+                              _goodsDetail.productList![0] ?? ProductModel(1, 1, [], 1, 1, "1", "1", "", true), 2),
                           child: Center(
                             child: Text(
                               KString.BUY,
@@ -227,9 +229,8 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                                 padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
                               ),
                               //选择规格
-                              Text(KString.ALREAD_SELECTED +
-                                  "：" +
-                                  _goodsDetail.productList[0].specifications[_specificationIndex])
+                              // Text(KString.ALREAD_SELECTED +"：" +_goodsDetail.productList![0].specifications![_specificationIndex!])
+                              Text(KString.ALREAD_SELECTED + "："),
                             ],
                           ),
                           Expanded(
@@ -256,7 +257,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       ),
                     ),
                     //商品规格
-                    Wrap(children: _specificationsWidget(productList.specifications)),
+                    Wrap(children: _specificationsWidget(productList.specifications!.cast<String>())),
                     Padding(
                       padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
                     ),
@@ -311,7 +312,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
 
   //商品规格
   List<Widget> _specificationsWidget(List<String> specifications) {
-    List<Widget> specificationsWidget = List();
+    List<Widget> specificationsWidget = <Widget>[];
     //循环迭代出所有规格
     for (int i = 0; i < specifications.length; i++) {
       specificationsWidget.add(Container(
@@ -342,23 +343,21 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
         //参数
         parameters = {
           //商品Id
-          "goodsId": _goodsDetail.info.id,
+          "goodsId": _goodsDetail.info!.id,
           //规格Id
-          "productId": _goodsDetail.productList[0].id,
+          "productId": _goodsDetail.productList![0]!.id,
           //数量
           "number": _number
         };
         //调用购物车数据服务的addCart方法
         _cartService.addCart(
-          parameters,
-          (value) {
-            ToastUtil.showToast(KString.ADD_CART_SUCCESS);
-            //隐藏弹出框
-            Navigator.of(context).pop();
-            //通知刷新
-            eventBus.fire(RefreshEvent());
-          },
-        );
+            parameters, (value) {
+          ToastUtil.showToast(KString.ADD_CART_SUCCESS);
+          //隐藏弹出框
+          Navigator.of(context).pop();
+          //通知刷新
+          eventBus.fire(RefreshEvent());
+        }, (good) {});
       } else {
         //如果没有token值跳转至登录框
         NavigatorUtil.goLogin(context);
@@ -372,9 +371,9 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
       //提交参数
       parameters = {
         //商品Id
-        "goodsId": _goodsDetail.info.id,
+        "goodsId": _goodsDetail.info!.id,
         //商品规格Id
-        "productId": _goodsDetail.productList[0].id,
+        "productId": _goodsDetail.productList![0]!.id,
         //商品数量
         "number": _number,
       };
@@ -407,9 +406,9 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
   _addOrDeleteCollect() {
     Options options = Options();
     //添加token至header
-    options.headers["X-Shop-Token"] = token;
+    options.headers!["X-Shop-Token"] = token;
     //参数
-    var parameters = {"type": 0, "valueId": _goodsDetail.info.id};
+    var parameters = {"type": 0, "valueId": _goodsDetail.info!.id};
     _collectService.addOrDeleteCollect(parameters, (onSuccess) {
       setState(() {
         _isCollection = true;
@@ -427,7 +426,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
         ListView(
           children: <Widget>[
             //商品轮播图
-            GoodsDetailGalleryWidget(_goodsDetail.info.gallery, _goodsDetail.info.gallery.length, 240.0),
+            GoodsDetailGalleryWidget(_goodsDetail.info!.gallery, _goodsDetail.info!.gallery!.length, 240.0),
             Divider(
               height: 2.0,
               color: Colors.grey,
@@ -442,7 +441,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                 children: <Widget>[
                   //商品名称
                   Text(
-                    _goodsDetail.info.name,
+                    _goodsDetail.info!.name,
                     style: TextStyle(fontSize: 16.0, color: Colors.black54, fontWeight: FontWeight.bold),
                   ),
                   Padding(
@@ -450,7 +449,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                   ),
                   //商品简介
                   Text(
-                    _goodsDetail.info.brief,
+                    _goodsDetail.info!.brief,
                     style: TextStyle(fontSize: 14.0, color: Colors.grey),
                   ),
                   Padding(
@@ -460,7 +459,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                     children: <Widget>[
                       //商品原价
                       Text(
-                        "原价：${_goodsDetail.info.counterPrice}",
+                        "原价：${_goodsDetail.info!.counterPrice}",
                         style: TextStyle(color: Colors.grey, fontSize: 12.0, decoration: TextDecoration.lineThrough),
                       ),
                       Padding(
@@ -468,7 +467,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                       ),
                       //商品现价
                       Text(
-                        "现价：${_goodsDetail.info.retailPrice}",
+                        "现价：${_goodsDetail.info!.retailPrice}",
                         style: TextStyle(color: Colors.deepOrangeAccent, fontSize: 12.0),
                       ),
                     ],
@@ -480,7 +479,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
               padding: EdgeInsets.only(top: 4.0),
             ),
             //商品属性
-            _goodsDetail.attribute == null || _goodsDetail.attribute.length == 0
+            _goodsDetail.attribute == null || _goodsDetail.attribute!.length == 0
                 ? Divider()
                 : Container(
                     //垂直布局
@@ -500,9 +499,9 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
                     ),
                   ),
             //商品详细信息
-            Html(data: _goodsDetail.info.detail),
+            Html(data: _goodsDetail.info!.detail),
             //常见问题
-            _goodsDetail.issue == null || _goodsDetail.issue.length == 0
+            _goodsDetail.issue == null || _goodsDetail.issue!.length == 0
                 ? Divider()
                 : Container(
                     //垂直布局
@@ -529,21 +528,21 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
 
   //商品属性Widget
   Widget _attributeWidget(GoodsDetailModel goodsDetail) {
-    print("${goodsDetail.attribute.length}");
+    print("${goodsDetail.attribute!.length}");
     //商品属性通过列表一行一行的展示
     return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         //商品属性个数
-        itemCount: goodsDetail.attribute.length,
+        itemCount: goodsDetail.attribute!.length,
         //商品属性项构建器
         itemBuilder: (BuildContext context, int index) {
-          return _attributeItemWidget(goodsDetail.attribute[index]);
+          return _attributeItemWidget(goodsDetail.attribute?[index]);
         });
   }
 
   //商品属性项
-  Widget _attributeItemWidget(AttributeModel attribute) {
+  Widget _attributeItemWidget(AttributeModel? attribute) {
     return Container(
         margin: EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 6),
         decoration: BoxDecoration(color: Colors.grey[100], borderRadius: BorderRadius.circular(10.0)),
@@ -555,7 +554,7 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
               flex: 2,
               //商品属性名称
               child: Text(
-                attribute.attribute,
+                attribute!.attribute,
                 style: TextStyle(color: KColor.attributeTextColor, fontSize: 14.0),
               ),
             ),
@@ -580,10 +579,10 @@ class _GoodsDetailPageState extends State<GoodsDetailPage> {
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         //常见问题条数
-        itemCount: goodsDetail.issue.length,
+        itemCount: goodsDetail.issue!.length,
         //常见问题项构建器
         itemBuilder: (BuildContext context, int index) {
-          return _issueItemWidget(goodsDetail.issue[index]);
+          return _issueItemWidget(goodsDetail.issue![index] ?? IssueModel(1, "", "", "", "", true));
         });
   }
 

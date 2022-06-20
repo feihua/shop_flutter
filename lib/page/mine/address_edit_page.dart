@@ -23,7 +23,7 @@ class AddressEditPage extends StatefulWidget {
 
 class _AddressEditPageState extends State<AddressEditPage> {
   //名称文本编辑控制器
-  TextEditingController _nameController;
+  late TextEditingController _nameController;
 
   //电话文本编辑控制器
   TextEditingController _phoneController = TextEditingController();
@@ -35,7 +35,7 @@ class _AddressEditPageState extends State<AddressEditPage> {
   AddressService _addressService = AddressService();
 
   //地址列表数据
-  AddressModel _addressData;
+  late AddressModel _addressData;
   var _cityText;
 
   //是否为默认地址
@@ -111,7 +111,7 @@ class _AddressEditPageState extends State<AddressEditPage> {
         _countryName = _addressData.county;
       });
       _initController();
-    });
+    }, (address) {});
   }
 
   @override
@@ -273,7 +273,7 @@ class _AddressEditPageState extends State<AddressEditPage> {
   //弹出地址选择组件
   show(context) async {
     //使用CityPickers组件弹出城市选择框
-    Result temp = await CityPickers.showCityPicker(
+    Result? temp = await CityPickers.showCityPicker(
       context: context,
       itemExtent: ScreenUtil().setHeight(80.0),
       itemBuilder: (item, list, index) {
@@ -287,7 +287,7 @@ class _AddressEditPageState extends State<AddressEditPage> {
     print(temp);
     setState(() {
       //设置选择好的地址信息
-      _cityText = temp.provinceName + temp.cityName + temp.areaName;
+      _cityText = temp!.provinceName! + temp.cityName! + temp.areaName!;
       _areaId = temp.areaId;
       _provinceName = temp.provinceName;
       _cityName = temp.cityName;

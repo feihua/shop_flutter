@@ -24,7 +24,7 @@ class _GoodsListPageState extends State<GoodsListPage> {
   GoodsService goodsService = GoodsService();
 
   //商品数据模型
-  List<GoodsModel> goodsModels = List();
+  List<GoodsModel?>? goodsModels = <GoodsModel>[];
 
   //二级分类Id,用于查询二级分类的商品列表数据
   var categoryId;
@@ -35,16 +35,18 @@ class _GoodsListPageState extends State<GoodsListPage> {
       //判断当前页面是否存在
       if (mounted) {
         setState(() {
-          goodsModels = goodsModelList;
+          goodsModels = goodsModelList!.cast<GoodsModel>();
         });
       }
+    }, (good) {
+      print(good);
     });
   }
 
   @override
   void initState() {
     super.initState();
-    if (goodsModels == null || goodsModels.length == 0) {
+    if (goodsModels == null || goodsModels?.length == 0) {
       categoryId = widget.categoryId;
       //获取商品列表数据
       _getGoodsData(categoryId);
@@ -61,9 +63,9 @@ class _GoodsListPageState extends State<GoodsListPage> {
     return Scaffold(
         body: Container(
       child: Center(
-        child: goodsModels != null && goodsModels.length != 0
+        child: goodsModels != null && goodsModels?.length != 0
             ? GridView.builder(
-                itemCount: goodsModels == null ? 0 : goodsModels.length,
+                itemCount: goodsModels == null ? 0 : goodsModels?.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     //两列
                     crossAxisCount: 2,
@@ -75,7 +77,7 @@ class _GoodsListPageState extends State<GoodsListPage> {
                 //构建商品列表项
                 itemBuilder: (BuildContext context, int index) {
                   //返回商品项
-                  return getGoodsItemWidget(goodsModels[index]);
+              return getGoodsItemWidget(goodsModels![index] ?? GoodsModel(1, "", "", "", true, true, 0, 0));
                 })
             : Center(
                 //垂直布局
@@ -119,7 +121,7 @@ class _GoodsListPageState extends State<GoodsListPage> {
                   //商品图片
                   CachedImageWidget(
                     double.infinity,
-                    ScreenUtil.getInstance().setHeight(200.0),
+                    ScreenUtil().setHeight(200.0),
                     goodsModel.picUrl,
                   ),
                   Padding(

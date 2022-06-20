@@ -8,7 +8,7 @@ import 'package:shop_flutter/widgets/cached_image_widget.dart';
 //首页分类组件
 class HomeCategoryWidget extends StatelessWidget {
   //首页分类列表数据
-  List<Channel> categoryList;
+  List<Channel?>? categoryList;
 
   //传入分类列表
   HomeCategoryWidget(this.categoryList);
@@ -24,18 +24,18 @@ class HomeCategoryWidget extends StatelessWidget {
     return Container(
         //网格布局,2行5列
         child: GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
+          physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       //分类项个数
-      itemCount: categoryList.length,
+      itemCount: categoryList?.length,
       //项构建器
       itemBuilder: (BuildContext context, int index) {
         //返回单元格项
-        return _getGridViewItem(context, categoryList[index]);
+        return _getGridViewItem(context, categoryList![index] ?? Channel(1, "test", "http://www.baidu.com"));
       },
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         //单个子Widget的水平最大宽度
-            crossAxisCount: 5,
+        crossAxisCount: 5,
         //水平单个子Widget之间间距
         mainAxisSpacing: ScreenUtil().setWidth(20.0),
         //垂直单个子Widget之间间距

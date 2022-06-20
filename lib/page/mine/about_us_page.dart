@@ -29,13 +29,25 @@ class AboutUsPage extends StatelessWidget {
             Padding(padding: EdgeInsets.all(ScreenUtil().setHeight(10.0))),
             DividerLineWidget(),
             //名字
-            ItemTextWidget(KString.MINE_ABOUT_NAME_TITLE, KString.MINE_ABOUT_NAME),
+            ItemTextWidget(
+              KString.MINE_ABOUT_NAME_TITLE,
+              KString.MINE_ABOUT_NAME,
+              callback: () {},
+            ),
             DividerLineWidget(),
             //邮箱
-            ItemTextWidget(KString.MINE_ABOUT_EMAIL_TITLE, KString.MINE_ABOUT_EMAIL),
+            ItemTextWidget(
+              KString.MINE_ABOUT_EMAIL_TITLE,
+              KString.MINE_ABOUT_EMAIL,
+              callback: () {},
+            ),
             DividerLineWidget(),
             //联系方式
-            ItemTextWidget(KString.MINE_ABOUT_TEL_TITLE, KString.MINE_ABOUT_TEL),
+            ItemTextWidget(
+              KString.MINE_ABOUT_TEL_TITLE,
+              KString.MINE_ABOUT_TEL,
+              callback: () {},
+            ),
             DividerLineWidget(),
           ],
         ),

@@ -1,14 +1,16 @@
 //page/goods/goods_detail_gallery.dart文件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_tv/flutter_swiper.dart';
+
+// import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/widgets/cached_image_widget.dart';
 
 //商品详情主图轮播组件
 class GoodsDetailGalleryWidget extends StatelessWidget {
   //轮播图数据
-  List<String> galleryData = List();
+  List<String?>? galleryData = <String>[];
 
   //数量
   int size;
@@ -23,9 +25,9 @@ class GoodsDetailGalleryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: viewHeight,
-      child: galleryData == null || galleryData.length == 0
+      child: galleryData == null || galleryData!.length == 0
           ? Container(
-        height: ScreenUtil().setHeight(200.0),
+              height: ScreenUtil().setHeight(200.0),
               color: Colors.grey,
               alignment: Alignment.center,
               //没有数据文本提示
@@ -33,7 +35,7 @@ class GoodsDetailGalleryWidget extends StatelessWidget {
             )
           : Swiper(
               //轮播图数量
-              itemCount: galleryData.length,
+              itemCount: galleryData!.length,
               //滚动方向
               scrollDirection: Axis.horizontal,
               //滚动方向，设置为Axis.vertical如果需要垂直滚动
@@ -44,7 +46,7 @@ class GoodsDetailGalleryWidget extends StatelessWidget {
               autoplay: false,
               itemBuilder: (BuildContext buildContext, int index) {
                 //缓存图片
-                return CachedImageWidget(double.infinity, double.infinity, galleryData[index]);
+                return CachedImageWidget(double.infinity, double.infinity, galleryData![index]!);
               },
               //动画时长
               duration: 10000,

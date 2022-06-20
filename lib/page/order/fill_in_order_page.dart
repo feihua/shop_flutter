@@ -28,7 +28,7 @@ class FillInOrderPage extends StatefulWidget {
 
 class _FillInOrderPageState extends State<FillInOrderPage> {
   //填写订单数据模型
-  late FillInOrderModel _fillInOrderModel;
+  FillInOrderModel _fillInOrderModel=FillInOrderModel(1, 1, 1, 1, 1,CheckedAddressModel(1,"",1,"","","","","","",true,"","",false) , 1, []);
 
   //订单数据服务
   OrderService _orderService = OrderService();
@@ -43,7 +43,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
   var token;
 
   //填写订单的Futurre对象
-  late Future fillInOrderFuture;
+  // Future fillInOrderFuture;
 
   //Dio的Options对象
   Options options = Options();
@@ -55,31 +55,40 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
     SharedPreferencesUtil.getToken().then((onValue) {
       token = onValue;
       //获取购物车勾选的数据
-      _getFillInOrder();
+      // _getFillInOrder();
     });
   }
 
   //获取购物车勾选的数据
-  _getFillInOrder() {
-    var parameters = {
-      //购物车Id
-      "cartId": widget.cartId == 0 ? 0 : widget.cartId,
-      //地址Id
-      "addressId": 0,
-    };
-    //获取购物车勾选的数据
-    fillInOrderFuture = _cartService.getCartDataForFillInOrder((success) {
-      setState(() {
-        _fillInOrderModel = success;
-      });
-    }, (error) {}, parameters);
-  }
+  // _getFillInOrder() {
+  //   var parameters = {
+  //     //购物车Id
+  //     "cartId": widget.cartId == 0 ? 0 : widget.cartId,
+  //     //地址Id
+  //     "addressId": 0,
+  //   };
+  //   //获取购物车勾选的数据
+  //   fillInOrderFuture = _cartService.getCartDataForFillInOrder((success) {
+  //     setState(() {
+  //       _fillInOrderModel = success;
+  //     });
+  //   }, (error) {}, parameters);
+  // }
 
   @override
   Widget build(BuildContext context) {
     //异步构建组件
     return FutureBuilder(
-        future: fillInOrderFuture,
+        future: _cartService.getCartDataForFillInOrder((success) {
+          setState(() {
+            _fillInOrderModel = success;
+          });
+        }, (error) {}, {
+          //购物车Id
+          "cartId": widget.cartId == 0 ? 0 : widget.cartId,
+          //地址Id
+          "addressId": 0,
+        }),
         builder: (BuildContext context, AsyncSnapshot asyncSnapshot) {
           switch (asyncSnapshot.connectionState) {
             case ConnectionState.none:
@@ -142,13 +151,21 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
               color: Colors.grey[350],
             ),
             //总价
-            ItemTextWidget(KString.GOODS_TOTAL, "¥${_fillInOrderModel.goodsTotalPrice}"),
+            ItemTextWidget(
+              KString.GOODS_TOTAL,
+              "¥${_fillInOrderModel.goodsTotalPrice}",
+              callback: () {},
+            ),
             Divider(
               height: ScreenUtil().setHeight(1.0),
               color: Colors.grey,
             ),
             //运费
-            ItemTextWidget(KString.FREIGHT, "¥${_fillInOrderModel.freightPrice}"),
+            ItemTextWidget(
+              KString.FREIGHT,
+              "¥${_fillInOrderModel.freightPrice}",
+              callback: () {},
+            ),
             Divider(
               height: ScreenUtil().setHeight(1.0),
               color: Colors.grey[350],
@@ -159,7 +176,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
             ),
             //购物车选中的商品
             Column(
-              children: _goodsItems(_fillInOrderModel.checkedGoodsList),
+              children: _goodsItems(_fillInOrderModel.checkedGoodsList!.cast<CheckedGoodsModel>()),
             )
           ],
         ),
@@ -197,7 +214,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
 
   //商品列表
   List<Widget> _goodsItems(List<CheckedGoodsModel> goods) {
-    List<Widget> list = List();
+    List<Widget> list = <Widget>[];
     //循环添加所有商品,用户可能挑选了多件商品
     for (int i = 0; i < goods.length; i++) {
       list.add(_goodsItem(goods[i]));
@@ -236,7 +253,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
               Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(6.0))),
               //商品规格
               Text(
-                checkedGoods.specifications[0],
+                checkedGoods.specifications![0] ?? "",
                 style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(22.0)),
               ),
               Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0))),
@@ -293,11 +310,11 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                 //提示填写备注
                 hintText: KString.REMARK,
                 hintStyle: TextStyle(color: Colors.grey[350], fontSize: ScreenUtil().setSp(26.0)),
-                hasFloatingPlaceholder: false,
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent, width: ScreenUtil().setHeight(1.0))),
                 focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.transparent, width: ScreenUtil().setHeight(1.0))),
+                floatingLabelBehavior: FloatingLabelBehavior.never,
               ),
               style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
               controller: _controller,
@@ -314,11 +331,12 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
       height: ScreenUtil().setHeight(120.0),
       margin: EdgeInsets.all(ScreenUtil().setWidth(10.0)),
       padding: EdgeInsets.only(left: ScreenUtil().setWidth(20.0), right: ScreenUtil().setWidth(20.0)),
-      child: _fillInOrderModel.checkedAddress.id != 0
+      child: _fillInOrderModel.checkedAddress?.id != 0
           ? InkWell(
               onTap: () {
                 //跳转至地址页面,返回后获取地址信息
-                NavigatorUtil.goAddress(context).then((value) {
+                NavigatorUtil.goAddress(context)!.then((value) {
+                  print("xxxxxxxxxxxxxxxxxxxxxxxx");
                   print(value.toString());
                   Map<String, dynamic> addressData = Map();
                   //根据导航返回的地址数据转换成Map
@@ -343,7 +361,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                         children: <Widget>[
                           //联系人名称
                           Text(
-                            _fillInOrderModel.checkedAddress.name,
+                            _fillInOrderModel.checkedAddress!.name,
                             style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(28.0)),
                           ),
                           Padding(
@@ -351,7 +369,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                           ),
                           //联系人电话
                           Text(
-                            _fillInOrderModel.checkedAddress.tel,
+                            _fillInOrderModel.checkedAddress!.tel,
                             style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                           ),
                         ],
@@ -361,10 +379,10 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
                       ),
                       //联系人地址信息
                       Text(
-                        _fillInOrderModel.checkedAddress.province +
-                            _fillInOrderModel.checkedAddress.city +
-                            _fillInOrderModel.checkedAddress.county +
-                            _fillInOrderModel.checkedAddress.addressDetail,
+                        _fillInOrderModel.checkedAddress!.province +
+                            _fillInOrderModel.checkedAddress!.city +
+                            _fillInOrderModel.checkedAddress!.county +
+                            _fillInOrderModel.checkedAddress!.addressDetail,
                         style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                       ),
                     ],
@@ -411,7 +429,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
 
   //提交订单
   _submitOrder() {
-    if (_fillInOrderModel.checkedAddress.id == 0) {
+    if (_fillInOrderModel.checkedAddress!.id == 0) {
       //请选择地址提示
       ToastUtil.showToast(KString.PLEASE_SELECT_ADDRESS);
       return;
@@ -420,7 +438,7 @@ class _FillInOrderPageState extends State<FillInOrderPage> {
       //购物车Id
       "cartId": 0,
       //地址Id
-      "addressId": _fillInOrderModel.checkedAddress.id,
+      "addressId": _fillInOrderModel.checkedAddress!.id,
       //备注
       "message": _controller.text,
     };

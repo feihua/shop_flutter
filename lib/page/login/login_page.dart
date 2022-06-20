@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                           //弹出键盘为数字
                           keyboardType: TextInputType.phone,
                           //验证回调方法
-                          validator: _validatorAccount,
+                          // validator: _validatorAccount,
                           //边框样式
                           decoration: InputDecoration(
                             icon: Icon(
@@ -97,9 +97,9 @@ class _LoginPageState extends State<LoginPage> {
                           //密码显示
                           obscureText: true,
                           //自动验证
-                          autovalidate: _autovalidator,
+                          // autovalidate: _autovalidator,
                           //验证回调方法
-                          validator: _validatorPassWord,
+                          // validator: _validatorPassWord,
                           //边框样式
                           decoration: InputDecoration(
                             icon: Icon(
@@ -169,7 +169,7 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.length < 11) {
       return KString.ACCOUNT_RULE;
     }
-    return null;
+    return "";
   }
 
   //验证密码
@@ -178,14 +178,14 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.length < 6) {
       return KString.PASSWORD_HINT;
     }
-    return null;
+    return "";
   }
 
   //登录
   _login() {
     //登录之前执行验证
-    if (registerFormKey.currentState.validate()) {
-      registerFormKey.currentState.save();
+    if (registerFormKey.currentState?.validate() ?? true) {
+      registerFormKey.currentState?.save();
       //登录参数
       Map<String, dynamic> map = Map();
       //设置密码参数
@@ -201,7 +201,8 @@ class _LoginPageState extends State<LoginPage> {
         //登录成功提示
         _showToast(KString.LOGIN_SUCESS);
         //触发登录事件,通知购物车或我的页面此用户已经登录成功
-        loginEventBus.fire(LoginEvent(true, url: userModel.userInfo.avatarUrl, nickName: userModel.userInfo.nickName));
+        loginEventBus
+            .fire(LoginEvent(true, url: userModel.userInfo?.avatarUrl, nickName: userModel.userInfo?.nickName));
         Navigator.pop(context);
       }, (onFail) {
         print(onFail);
@@ -210,7 +211,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     } else {
       setState(() {
-        _autovalidator = true;
+        // _autovalidator = true;
       });
     }
   }

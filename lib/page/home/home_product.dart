@@ -9,7 +9,7 @@ import 'package:shop_flutter/widgets/cached_image_widget.dart';
 //首页产品组件,用于显示最新产品及热卖产品
 class HomeProductWidget extends StatelessWidget {
   //产品数据列表
-  List<Goods> productList;
+  List<Goods?>? productList;
 
   //构造方法
   HomeProductWidget(this.productList);
@@ -22,7 +22,7 @@ class HomeProductWidget extends StatelessWidget {
       child: GridView.builder(
           shrinkWrap: true,
           //产品个数
-          itemCount: productList.length,
+          itemCount: productList?.length,
           physics: NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               //列的数量
@@ -32,7 +32,7 @@ class HomeProductWidget extends StatelessWidget {
           //根据索引构建单元格
           itemBuilder: (BuildContext context, int index) {
             //返回单元格,传入商品数据
-            return _getGridItemWidget(context, productList[index]);
+            return _getGridItemWidget(context, productList![index] ?? Goods(1, "", "", "", true, true, 11, 11));
           }),
     );
   }

@@ -30,10 +30,10 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
   OrderService _orderService = OrderService();
 
   //订单详情数据模型
-  OrderDetailModel _orderDetailModel;
+  late OrderDetailModel _orderDetailModel;
 
   //订单详情Future对象
-  Future _orderDetailFuture;
+  late Future _orderDetailFuture;
 
   //订单动作,删除订单/取消订单
   var orderAction;
@@ -108,11 +108,19 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           //订单编号
-          ItemTextWidget(KString.MINE_ORDER_SN, _orderDetailModel.orderInfo.orderSn),
+          ItemTextWidget(
+            KString.MINE_ORDER_SN,
+            _orderDetailModel.orderInfo!.orderSn,
+            callback: () {},
+          ),
           //分割线组件
           DividerLineWidget(),
           //订单创建时间
-          ItemTextWidget(KString.MINE_ORDER_TIME, _orderDetailModel.orderInfo.addTime),
+          ItemTextWidget(
+            KString.MINE_ORDER_TIME,
+            _orderDetailModel.orderInfo!.addTime,
+            callback: () {},
+          ),
           DividerLineWidget(),
           Container(
               margin: EdgeInsets.only(left: ScreenUtil().setWidth(20.0)),
@@ -133,7 +141,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                           alignment: Alignment.centerRight,
                           //是否显示已取消文本
                           child: Offstage(
-                            offstage: _orderDetailModel.orderInfo.handleOption.cancel,
+                            offstage: _orderDetailModel.orderInfo!.handleOption!.cancel,
                             child: Text(
                               //已取消文本提示
                               KString.MINE_ORDER_ALREADY_CANCEL,
@@ -148,10 +156,11 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
               //订单商品个数
-              itemCount: _orderDetailModel.orderGoods.length,
+              itemCount: _orderDetailModel.orderGoods!.length,
               //构建商品列表项
               itemBuilder: (BuildContext context, int index) {
-                return _goodItemWidget(_orderDetailModel.orderGoods[index]);
+                return _goodItemWidget(_orderDetailModel.orderGoods![index] ??
+                    OrderDetailGoodsModel(1, 1, 1, "", "", 1, 1, 1, [""], "", 1, "", "", true));
               }),
           DividerLineWidget(),
           Container(
@@ -169,7 +178,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                   children: <Widget>[
                     //收货人
                     Text(
-                      _orderDetailModel.orderInfo.consignee,
+                      _orderDetailModel.orderInfo!.consignee,
                       style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                     ),
                     Padding(
@@ -177,7 +186,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                     ),
                     //手机信息
                     Text(
-                      _orderDetailModel.orderInfo.mobile,
+                      _orderDetailModel.orderInfo!.mobile,
                       style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                     ),
                   ],
@@ -185,7 +194,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0))),
                 //收货地址信息
                 Text(
-                  _orderDetailModel.orderInfo.address,
+                  _orderDetailModel.orderInfo!.address,
                   style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(26.0)),
                   softWrap: true,
                 ),
@@ -194,14 +203,25 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
           ),
           DividerLineWidget(),
           //订单商品合计价格
-          ItemTextWidget(KString.MINE_ORDER_DETAIL_TOTAL, KString.DOLLAR + "${_orderDetailModel.orderInfo.goodsPrice}"),
+          ItemTextWidget(
+            KString.MINE_ORDER_DETAIL_TOTAL,
+            KString.DOLLAR + "${_orderDetailModel.orderInfo!.goodsPrice}",
+            callback: () {},
+          ),
           DividerLineWidget(),
           //订单运费
-          ItemTextWidget(KString.FREIGHT, KString.DOLLAR + "${_orderDetailModel.orderInfo.freightPrice}"),
+          ItemTextWidget(
+            KString.FREIGHT,
+            KString.DOLLAR + "${_orderDetailModel.orderInfo!.freightPrice}",
+            callback: () {},
+          ),
           DividerLineWidget(),
           //订单实付价格
           ItemTextWidget(
-              KString.MINE_ORDER_DETAIL_PAYMENTS, KString.DOLLAR + "${_orderDetailModel.orderInfo.actualPrice}"),
+            KString.MINE_ORDER_DETAIL_PAYMENTS,
+            KString.DOLLAR + "${_orderDetailModel.orderInfo!.actualPrice}",
+            callback: () {},
+          ),
           DividerLineWidget(),
           Container(
             height: ScreenUtil().setHeight(100.0),
@@ -281,7 +301,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
                 ),
                 //商品规格
                 Text(
-                  good.specifications[0],
+                  good.specifications![0] ?? "",
                   style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(26.0)),
                 ),
                 Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0))),
@@ -387,7 +407,7 @@ class _OrderDetailPageState extends State<OrderDetailPage> {
     _orderService.cancelOrder(parameters, (success) {
       ToastUtil.showToast(KString.MINE_ORDER_CANCEL_SUCCESS);
       setState(() {
-        _orderDetailModel.orderInfo.handleOption.cancel = false;
+        _orderDetailModel.orderInfo!.handleOption!.cancel = false;
       });
     }, (error) {
       ToastUtil.showToast(error);

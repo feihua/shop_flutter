@@ -16,14 +16,9 @@ typedef OnFail(String message);
 //购物车数据服务
 class CartService {
   //添加商品至购物车
-  Future addCart(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail, Options? options) async {
+  Future addCart(Map<String, dynamic> parameters, OnSuccess onSuccess, OnFail onFail) async {
     try {
-      var response;
-      if (options == null) {
-        response = await HttpUtil.instance.post(ServerUrl.CART_ADD, parameters: parameters);
-      } else {
-        response = await HttpUtil.instance.post(ServerUrl.CART_ADD, parameters: parameters, options: options);
-      }
+      var response = await HttpUtil.instance.post(ServerUrl.CART_ADD, parameters: parameters);
       if (response['errno'] == 0) {
         //添加成功返回成功消息
         onSuccess(KString.SUCCESS);
@@ -39,10 +34,10 @@ class CartService {
   }
 
   //查询购物车列表数据,购物车页面使用此方法
-  Future queryCart(OnSuccess onSuccess, OnFail onFail, Options options) async {
+  Future queryCart(OnSuccess onSuccess, OnFail onFail) async {
     try {
       var response;
-      response = await HttpUtil.instance.get(ServerUrl.CART_LIST, options: options);
+      response = await HttpUtil.instance.get(ServerUrl.CART_LIST);
       if (response['errno'] == 0) {
         //将返回的Json数据转换成购物车列表数据
         CartListModel cartList = CartListModel.fromJson(response['data']);

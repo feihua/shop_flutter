@@ -1,7 +1,7 @@
 //config/server_url.dart文件
 //服务端接口地址
 class ServerUrl {
-  static const String BASE_URL = 'http://localhost:8080/client'; //基础地址
+  static const String BASE_URL = 'http://192.168.1.108:8080/client'; //基础地址
 
   static const String HOME_URL = BASE_URL + '/home/index'; //首页数据
 

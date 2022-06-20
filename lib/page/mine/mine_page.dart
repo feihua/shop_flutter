@@ -95,7 +95,7 @@ class _MinePageState extends State<MinePage> {
       body: Column(
         children: <Widget>[
           Container(
-            height: ScreenUtil.getInstance().setHeight(160.0),
+            height: ScreenUtil().setHeight(160.0),
             width: double.infinity,
             alignment: Alignment.center,
             //判断是否登录
@@ -108,7 +108,7 @@ class _MinePageState extends State<MinePage> {
                         width: 60,
                         height: 60,
                         margin: EdgeInsets.only(
-                          left: ScreenUtil.getInstance().setWidth(20.0),
+                          left: ScreenUtil().setWidth(20.0),
                         ),
                         //显示头像
                         child: CircleAvatar(
@@ -121,12 +121,12 @@ class _MinePageState extends State<MinePage> {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: ScreenUtil.getInstance().setWidth(10.0)),
+                        padding: EdgeInsets.only(left: ScreenUtil().setWidth(10.0)),
                       ),
                       //昵称
                       Text(
                         nickName,
-                        style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(26.0), color: Colors.black),
+                        style: TextStyle(fontSize: ScreenUtil().setSp(26.0), color: Colors.black),
                       ),
                       Expanded(
                         //退出按钮
@@ -137,12 +137,12 @@ class _MinePageState extends State<MinePage> {
                               //登录后显示此组件
                               offstage: !isLogin,
                               child: Container(
-                                padding: EdgeInsets.only(right: ScreenUtil.getInstance().setWidth(30)),
+                                padding: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
                                 alignment: Alignment.centerRight,
                                 //登出文本
                                 child: Text(
                                   KString.LOGIN_OUT,
-                                  style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(26), color: Colors.black54),
+                                  style: TextStyle(fontSize: ScreenUtil().setSp(26), color: Colors.black54),
                                 ),
                               ),
                             )),
@@ -155,39 +155,39 @@ class _MinePageState extends State<MinePage> {
                     //登录文本
                     child: Text(
                       KString.CLICK_LOGIN,
-                      style: TextStyle(color: Colors.black54, fontSize: ScreenUtil.getInstance().setSp(30.0)),
+                      style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(30.0)),
                     ),
                   ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: ScreenUtil.getInstance().setHeight(20.0)),
+            padding: EdgeInsets.only(top: ScreenUtil().setHeight(20.0)),
           ),
           Divider(
-            height: ScreenUtil.getInstance().setHeight(1.0),
+            height: ScreenUtil().setHeight(1.0),
             color: Color(0xffd3d3d3),
           ),
           //我的订单
           IconTextArrowWidget(KIcon.ORDER, KString.ORDER, Colors.deepPurpleAccent, _order),
           Divider(
-            height: ScreenUtil.getInstance().setHeight(1.0),
+            height: ScreenUtil().setHeight(1.0),
             color: Color(0xffd3d3d3),
           ),
           //收藏
           IconTextArrowWidget(KIcon.COLLECTION, KString.COLLECTION, Colors.red, _collect),
           Divider(
-            height: ScreenUtil.getInstance().setHeight(1.0),
+            height: ScreenUtil().setHeight(1.0),
             color: Color(0xffd3d3d3),
           ),
           //地址管理
           IconTextArrowWidget(KIcon.ADDRESS, KString.ADDRESS, Colors.amber, _address),
           Divider(
-            height: ScreenUtil.getInstance().setHeight(1.0),
+            height: ScreenUtil().setHeight(1.0),
             color: Color(0xffd3d3d3),
           ),
           //关于我们
           IconTextArrowWidget(KIcon.ABOUT_US, KString.ABOUT_US, Colors.teal, _aboutUs),
           Divider(
-            height: ScreenUtil.getInstance().setHeight(1.0),
+            height: ScreenUtil().setHeight(1.0),
             color: Color(0xffd3d3d3),
           ),
         ],
@@ -205,12 +205,12 @@ class _MinePageState extends State<MinePage> {
             //提示
             title: Text(
               KString.TIPS,
-              style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(30), color: Colors.black54),
+              style: TextStyle(fontSize: ScreenUtil().setSp(30), color: Colors.black54),
             ),
             //登出提示
             content: Text(
               KString.LOGIN_OUT_TIPS,
-              style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(30), color: Colors.black54),
+              style: TextStyle(fontSize: ScreenUtil().setSp(30), color: Colors.black54),
             ),
             //操作按钮
             actions: <Widget>[

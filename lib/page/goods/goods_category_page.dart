@@ -13,26 +13,26 @@ class GoodsCategoryPage extends StatefulWidget {
   int categoryId;
 
   //构造方法,传入一级分类名称和分类Id
-  GoodsCategoryPage({Key key, @required this.categoryName, @required this.categoryId}) : super(key: key);
+  GoodsCategoryPage({required Key key, required this.categoryName, required this.categoryId}) : super(key: key);
 
   @override
   _GoodsCategoryPageState createState() => _GoodsCategoryPageState();
 }
 
 class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProviderStateMixin {
-  ScrollController _scrollController;
+  late ScrollController _scrollController;
 
   //二级分类选项卡
-  TabController _tabController;
+  late TabController _tabController;
 
   //数据服务
   GoodsService _goodsService = GoodsService();
 
   //分类标题数据模型
-  CategoryTitleModel _categoryTitleModel;
+  late CategoryTitleModel _categoryTitleModel;
 
   //同级(二级)分类数据列表
-  List<CategoryModel> brotherCategory = List();
+  List<CategoryModel> brotherCategory = <CategoryModel>[];
   var categoryFuture;
 
   //当前选中的二级分类索引
@@ -46,7 +46,7 @@ class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProvid
       //分类标题
       _categoryTitleModel = categoryTitles;
       //同级分类标题
-      brotherCategory = _categoryTitleModel.brotherCategory;
+      brotherCategory = _categoryTitleModel.brotherCategory!.cast<CategoryModel>();
       //当前选项卡索引
       currentIndex = getCurrentIndex();
     }, (error) {});
@@ -57,7 +57,7 @@ class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProvid
     //循环同级分类
     for (int i = 0; i < brotherCategory.length; i++) {
       //判断如果分类id相等,表示查找到当前分类索引
-      if (brotherCategory[i].id == _categoryTitleModel.currentCategory.id) {
+      if (brotherCategory[i].id == _categoryTitleModel.currentCategory!.id) {
         return i;
       }
     }
@@ -113,7 +113,7 @@ class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProvid
 
   //获取TabBar
   List<Widget> getTabBars() {
-    List<Widget> tabBar = List();
+    List<Widget> tabBar = <Widget>[];
     for (var category in brotherCategory) {
       tabBar.add(getTabBarWidget(category));
     }
@@ -122,7 +122,7 @@ class _GoodsCategoryPageState extends State<GoodsCategoryPage> with TickerProvid
 
   //获取TabBarView
   List<Widget> getTabBarViews() {
-    List<Widget> tabBarView = List();
+    List<Widget> tabBarView = <Widget>[];
     for (var i = 0; i < brotherCategory.length; i++) {
       //添加分类商品列表组件
       tabBarView.add(GoodsListPage(brotherCategory[i].id));

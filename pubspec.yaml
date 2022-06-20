@@ -12,7 +12,8 @@ dependencies:
   flutter:
     sdk: flutter
   #轮播组件
-  flutter_swiper: ^1.1.6
+  #  flutter_swiper: ^1.1.6
+  flutter_swiper_tv: ^1.1.6-nullsafety
   #json处理
   json_annotation: ^4.5.0
   #网络请求

@@ -40,6 +40,7 @@ class HttpUtil {
       //获取本地token
       await SharedPreferencesUtil.getToken().then((token) {
         //将token值放入请求头里
+        print('token'+token);
         options.headers[KString.TOKEN] = token;
       });
       //解锁

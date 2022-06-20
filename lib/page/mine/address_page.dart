@@ -16,7 +16,7 @@ class AddressPage extends StatefulWidget {
 
 class _AddressPageState extends State<AddressPage> {
   //地址列表数据
-  List<AddressModel> _addressData;
+  List<AddressModel?>? _addressData;
 
   //地址数据服务
   AddressService addressService = AddressService();
@@ -40,7 +40,7 @@ class _AddressPageState extends State<AddressPage> {
       setState(() {
         _addressData = addressList;
       });
-    });
+    }, (address) {});
   }
 
   @override
@@ -64,14 +64,14 @@ class _AddressPageState extends State<AddressPage> {
           ))
         ],
       ),
-      body: _addressData != null && _addressData.length > 0
+      body: _addressData != null && _addressData!.length > 0
           ? Container(
               //地址列表
               child: ListView.builder(
                   //地址列表长度
-                  itemCount: _addressData.length,
+                  itemCount: _addressData!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return _addressItemView(_addressData[index]);
+                    return _addressItemView(_addressData![index]!);
                   }))
           //没有数据提示组件
           : NoDataWidget(),
@@ -134,7 +134,7 @@ class _AddressPageState extends State<AddressPage> {
                 margin: EdgeInsets.only(right: ScreenUtil().setWidth(10.0)),
                 alignment: Alignment.center,
                 decoration: ShapeDecoration(
-                    shape: Border(left: BorderSide(color: Colors.grey[350], width: ScreenUtil().setWidth(1.0)))),
+                    shape: Border(left: BorderSide(color: Color(350), width: ScreenUtil().setWidth(1.0)))),
                 padding: EdgeInsets.only(left: ScreenUtil().setWidth(10.0)),
                 //点击跳转至编辑页面
                 child: InkWell(
@@ -158,7 +158,7 @@ class _AddressPageState extends State<AddressPage> {
 
   //跳转至编辑页面,传入地址Id参数
   _goAddressEdit(var addressId) {
-    NavigatorUtil.goAddressEdit(context, addressId).then((bool) {
+    NavigatorUtil.goAddressEdit(context, addressId)!.then((bool) {
       _getAddressData();
     });
   }

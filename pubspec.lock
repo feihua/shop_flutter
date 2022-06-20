@@ -314,13 +314,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.5.0"
-  flutter_page_indicator:
+  flutter_page_indicator_tv:
     dependency: transitive
     description:
-      name: flutter_page_indicator
+      name: flutter_page_indicator_tv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.3"
+    version: "0.0.3-nullsafety"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -342,13 +342,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.23.0+1"
-  flutter_swiper:
+  flutter_swiper_tv:
     dependency: "direct main"
     description:
-      name: flutter_swiper
+      name: flutter_swiper_tv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6"
+    version: "1.1.6-nullsafety"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -833,13 +833,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  transformer_page_view:
+  transformer_page_view_tv:
     dependency: transitive
     description:
-      name: transformer_page_view
+      name: transformer_page_view_tv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.6"
+    version: "0.1.7-nullsafety"
   tuple:
     dependency: transitive
     description:

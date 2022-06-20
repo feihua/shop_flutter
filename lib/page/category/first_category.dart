@@ -27,12 +27,12 @@ class _FirstCategoryWidgetState extends State<FirstCategoryWidget> {
     //获取一级分类数据
     categoryService.getFirstCategoryData((list) {
       //派发事件,二级分类监听此事件
-      eventBus.fire(CategoryEvent(list[0].id, list[0].name, list[0].picUrl));
+      eventBus.fire(CategoryEvent(list![0].id, list[0].name, list[0].picUrl));
       setState(() {
         //设置一级分类列表数据
-        firstCategoryList = list;
+        firstCategoryList = list!.cast();
       });
-    });
+    }, (category) {});
   }
 
   @override

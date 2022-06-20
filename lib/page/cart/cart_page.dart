@@ -69,11 +69,13 @@ class _CartPageState extends State<CartPage> {
         //是否登录变量置为true
         _isLogin = true;
         _cartListModel = cartList;
-        _cartList = _cartListModel.cartList;
+        _cartList = _cartListModel.cartList!.cast<CartModel>();
       });
       //是否全选
       _isAllCheck = _isCheckedAll();
-    }, options: options);
+    }, (cart) {
+      print('');
+    });
   }
 
   //监听刷新事件,当用户从商品详情页面点击添加至购物车时会触发刷新事件
@@ -118,7 +120,7 @@ class _CartPageState extends State<CartPage> {
                                 return _getCartItemWidget(index);
                               }),
                           Container(
-                            height: ScreenUtil.getInstance().setHeight(120.0),
+                            height: ScreenUtil().setHeight(120.0),
                             decoration: ShapeDecoration(
                               shape: Border(
                                 top: BorderSide(
@@ -138,19 +140,19 @@ class _CartPageState extends State<CartPage> {
                                     //选择改变事件回调
                                     onChanged: (bool) {
                                       //设置是否全选
-                                      _setCheckedAll(bool);
+                                      _setCheckedAll(bool!);
                                     }),
                                 Container(
-                                  width: ScreenUtil.getInstance().setWidth(200.0),
+                                  width: ScreenUtil().setWidth(200.0),
                                   //全选价格
                                   child: Text(_isAllCheck
-                                      ? KString.TOTAL_MONEY + "${_cartListModel.cartTotal.checkedGoodsAmount}"
+                                      ? KString.TOTAL_MONEY + "${_cartListModel.cartTotal!.checkedGoodsAmount}"
                                       : KString.TOTAL_MONEY + "${_totalMoney}"),
                                 ),
                                 Expanded(
                                   child: Container(
                                     margin: EdgeInsets.only(
-                                      right: ScreenUtil.getInstance().setWidth(30.0),
+                                      right: ScreenUtil().setWidth(30.0),
                                     ),
                                     alignment: Alignment.centerRight,
                                     //结算按钮
@@ -164,8 +166,7 @@ class _CartPageState extends State<CartPage> {
                                       child: Text(
                                         //结算标签
                                         KString.SETTLEMENT,
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(26.0)),
+                                        style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(26.0)),
                                       ),
                                     ),
                                   ),
@@ -210,7 +211,7 @@ class _CartPageState extends State<CartPage> {
                     //登录文本
                     child: Text(
                       KString.LOGIN,
-                      style: TextStyle(color: Colors.white, fontSize: ScreenUtil.getInstance().setSp(30.0)),
+                      style: TextStyle(color: Colors.white, fontSize: ScreenUtil().setSp(30.0)),
                     ),
                   ),
                 ),
@@ -225,7 +226,7 @@ class _CartPageState extends State<CartPage> {
   //根据索引获取购物车项组件
   Widget _getCartItemWidget(int index) {
     return Container(
-      height: ScreenUtil.getInstance().setHeight(180.0),
+      height: ScreenUtil().setHeight(180.0),
       width: double.infinity,
       child: InkWell(
         //长按打开删除商品对话框
@@ -242,12 +243,12 @@ class _CartPageState extends State<CartPage> {
                   activeColor: KColor.defaultCheckBoxColor,
                   //改变回调方法
                   onChanged: (bool) {
-                    _checkCart(index, bool);
+                    _checkCart(index, bool ?? true);
                   }),
               //缓存商品图片
               CachedImageWidget(
-                ScreenUtil.getInstance().setWidth(140.0),
-                ScreenUtil.getInstance().setWidth(140.0),
+                ScreenUtil().setWidth(140.0),
+                ScreenUtil().setWidth(140.0),
                 //商品图片路径
                 _cartList[index].picUrl,
               ),
@@ -259,17 +260,17 @@ class _CartPageState extends State<CartPage> {
                   //商品名称
                   Text(
                     _cartList[index].goodsName,
-                    style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(24.0), color: Colors.black54),
+                    style: TextStyle(fontSize: ScreenUtil().setSp(24.0), color: Colors.black54),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: ScreenUtil.getInstance().setHeight(10.0),
+                      top: ScreenUtil().setHeight(10.0),
                     ),
                   ),
                   //商品价格
                   Text(
                     "¥${_cartList[index].price}",
-                    style: TextStyle(fontSize: ScreenUtil.getInstance().setSp(24.0), color: Colors.grey),
+                    style: TextStyle(fontSize: ScreenUtil().setSp(24.0), color: Colors.grey),
                   )
                 ],
               ),
@@ -280,11 +281,11 @@ class _CartPageState extends State<CartPage> {
                   //购买商品数量
                   Text(
                     "X${_cartList[index].number}",
-                    style: TextStyle(color: Colors.black54, fontSize: ScreenUtil.getInstance().setSp(24.0)),
+                    style: TextStyle(color: Colors.black54, fontSize: ScreenUtil().setSp(24.0)),
                   ),
                   Padding(
                     padding: EdgeInsets.only(
-                      top: ScreenUtil.getInstance().setHeight(10.0),
+                      top: ScreenUtil().setHeight(10.0),
                     ),
                   ),
                   //使用购物数量组件
@@ -336,12 +337,12 @@ class _CartPageState extends State<CartPage> {
     _cartService.cartCheck((success) {
       setState(() {
         _cartListModel = success;
-        _cartList = _cartListModel.cartList;
+        _cartList = _cartListModel.cartList!.cast<CartModel>();
         //重新设置全选状态
         _isAllCheck = _isCheckedAll();
       });
       //计算总价
-      _totalMoney = _cartListModel.cartTotal.goodsAmount;
+      _totalMoney = _cartListModel!.cartTotal!.goodsAmount!;
     }, (error) {
       ToastUtil.showToast(error);
     }, parameters);

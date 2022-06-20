@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
   HomeService _homeService = HomeService();
 
   //首页数据模型
-  late HomeModel _homeModel;
+  HomeModel? _homeModel;
 
   //刷新组件控制器
   EasyRefreshController _controller = EasyRefreshController();
@@ -97,26 +97,26 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                 children: <Widget>[
                   //轮播图组件
-                  HomeBannerWidget(_homeModel?.banner, ScreenUtil().setHeight(360.0)),
+                  HomeBannerWidget(_homeModel!.banner, ScreenUtil().setHeight(360.0)),
                   Padding(
                     padding: EdgeInsets.only(top: 10.0),
                   ),
                   //首页分类组件
-                  HomeCategoryWidget(_homeModel.channel),
+                  HomeCategoryWidget(_homeModel!.channel),
                   Container(
                     height: 40.0,
                     alignment: Alignment.center,
                     child: Text(KString.NEW_PRODUCT),
                   ),
                   //最新产品组件
-                  HomeProductWidget(_homeModel.newGoodsList),
+                  HomeProductWidget(_homeModel!.newGoodsList),
                   Container(
                     height: 40.0,
                     alignment: Alignment.center,
                     child: Text(KString.HOT_PRODUCT),
                   ),
                   //最热产品组件
-                  HomeProductWidget(_homeModel.hotGoodsList),
+                  HomeProductWidget(_homeModel!.hotGoodsList),
                 ],
               )),
               //刷新回调方法

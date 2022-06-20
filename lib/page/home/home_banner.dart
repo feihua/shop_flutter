@@ -1,7 +1,9 @@
 //home/home_banner.dart文件
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+
+// import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_tv/flutter_swiper.dart';
 import 'package:shop_flutter/config/index.dart';
 import 'package:shop_flutter/model/home_model.dart';
 import 'package:shop_flutter/utils/navigator_util.dart';
@@ -10,7 +12,7 @@ import 'package:shop_flutter/widgets/cached_image_widget.dart';
 //首页轮播图组件
 class HomeBannerWidget extends StatelessWidget {
   //轮播图数据
-  List<BannerModel> bannerData;
+  List<BannerModel?>? bannerData;
 
   //数量
   // int size;
@@ -27,7 +29,7 @@ class HomeBannerWidget extends StatelessWidget {
     return Container(
       height: viewHeight,
       width: double.infinity,
-      child: bannerData == null || bannerData.length == 0
+      child: bannerData == null || bannerData?.length == 0
           //没有数据提示
           ? Container(
               height: ScreenUtil().setHeight(400.0),
@@ -40,11 +42,11 @@ class HomeBannerWidget extends StatelessWidget {
           //轮播组件
           : Swiper(
               //点击跳转
-              onTap: (index) {
-                NavigatorUtil.goWebView(context, bannerData[index].name, bannerData[index].link);
+        onTap: (index) {
+                NavigatorUtil.goWebView(context, bannerData![index]?.name ?? "", bannerData![index]?.link ?? "");
               },
               //轮播图数量
-              itemCount: bannerData.length,
+              itemCount: bannerData!.length,
               //指定滚动方向
               scrollDirection: Axis.horizontal,
               //滚动方向，设置为Axis.vertical如果需要垂直滚动
@@ -55,7 +57,7 @@ class HomeBannerWidget extends StatelessWidget {
               autoplay: false,
               itemBuilder: (BuildContext buildContext, int index) {
                 //使用缓存图片组件显示轮播图
-                return CachedImageWidget(double.infinity, double.infinity, bannerData[index].url);
+                return CachedImageWidget(double.infinity, double.infinity, bannerData![index]?.url ?? "");
               },
               //滚动时长
               duration: 10000,

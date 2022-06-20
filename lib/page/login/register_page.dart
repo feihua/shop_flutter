@@ -54,11 +54,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       maxLines: 1,
                       maxLength: 11,
                       //自动验证
-                      autovalidate: _autovalidator,
+                      // autovalidate: _autovalidator,
                       //数字键盘
                       keyboardType: TextInputType.phone,
                       //账号验证方法
-                      validator: _validatorAccount,
+                      // validator: _validatorAccount,
                       //边框样式
                       decoration: InputDecoration(
                         icon: Icon(
@@ -87,9 +87,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       maxLines: 1,
                       maxLength: 12,
                       //自动验证
-                      autovalidate: _autovalidator,
+                      // autovalidate: _autovalidator,
                       //验证方法
-                      validator: _validatorPassWord,
+                      // validator: _validatorPassWord,
                       //边框样式
                       decoration: InputDecoration(
                         icon: Icon(
@@ -141,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value == null || value.length < 11) {
       return KString.ACCOUNT_RULE;
     }
-    return null;
+    return "null";
   }
 
   //验证密码
@@ -150,7 +150,7 @@ class _RegisterPageState extends State<RegisterPage> {
     if (value == null || value.length < 6) {
       return KString.PASSWORD_HINT;
     }
-    return null;
+    return "null";
   }
 
   //提示注册消息
@@ -159,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
-        timeInSecForIos: 1,
+        timeInSecForIosWeb: 1,
         backgroundColor: KColor.toastBgColor,
         textColor: KColor.toastTextColor,
         fontSize: ScreenUtil().setSp(28.0));
@@ -168,8 +168,8 @@ class _RegisterPageState extends State<RegisterPage> {
   //注册
   _register() {
     //提交注册前先验证
-    if (registerFormKey.currentState.validate()) {
-      registerFormKey.currentState.save();
+    if (registerFormKey.currentState?.validate() ?? true) {
+      registerFormKey.currentState?.save();
       //注册参数
       Map<String, dynamic> map = Map();
       //用户名

@@ -17,7 +17,7 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
   CategoryService categoryService = CategoryService();
 
   //二级分类数据列表
-  List<SubCategoryModel> subCategoryModels = List();
+  List<SubCategoryModel> subCategoryModels = <SubCategoryModel>[];
 
   //一级分类名称,图片及分类Id
   var categoryName, categoryImage, categoryId;
@@ -61,9 +61,9 @@ class _SubCategoryWidgetState extends State<SubCategoryWidget> {
       flag = true;
       setState(() {
         //设置二级分类数据
-        subCategoryModels = subCategoryModelList;
+        subCategoryModels = subCategoryModelList!.cast<SubCategoryModel>();
       });
-    }, onFail: (value) {});
+    }, (value) {});
   }
 
   @override

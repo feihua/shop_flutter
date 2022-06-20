@@ -20,7 +20,7 @@ class _OrderPageState extends State<OrderPage> {
   OrderService _orderService = OrderService();
 
   //订单列表数据
-  List<OrderModel> _orders = List();
+  List<OrderModel> _orders = <OrderModel>[];
 
   //token值
   var _token;
@@ -131,11 +131,11 @@ class _OrderPageState extends State<OrderPage> {
                   ListView.builder(
                       shrinkWrap: true,
                       //订单商品个数
-                      itemCount: order.goodsList.length,
+                      itemCount: order.goodsList?.length,
                       physics: NeverScrollableScrollPhysics(),
                       //订单商品项
                       itemBuilder: (BuildContext context, int index) {
-                        return _goodItemWidget(order.goodsList[index]);
+                        return _goodItemWidget(order.goodsList![index] ?? OrderGoodsModel(1, "", 0, 1, "", ["0"]));
                       }),
                   Container(
                     margin: EdgeInsets.only(top: ScreenUtil().setHeight(10.0)),
@@ -154,7 +154,7 @@ class _OrderPageState extends State<OrderPage> {
 
   //跳转至订单详情
   _goOrderDetail(int orderId) {
-    NavigatorUtil.goOrderDetail(context, orderId, _token).then((bool) {
+    NavigatorUtil.goOrderDetail(context, orderId, _token)!.then((bool) {
       _orderData();
     });
   }
@@ -163,8 +163,8 @@ class _OrderPageState extends State<OrderPage> {
   int goodNumber(OrderModel order) {
     int number = 0;
     //查询某个订单下的所有商品做累加处理
-    order.goodsList.forEach((good) {
-      number += good.number;
+    order.goodsList!.forEach((good) {
+      number += good!.number;
     });
     return number;
   }
@@ -195,7 +195,7 @@ class _OrderPageState extends State<OrderPage> {
                 Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0))),
                 //商品规格
                 Text(
-                  good.specifications[0],
+                  good.specifications![0] ?? "",
                   style: TextStyle(color: Colors.grey, fontSize: ScreenUtil().setSp(26.0)),
                 ),
                 Padding(padding: EdgeInsets.only(top: ScreenUtil().setHeight(10.0))),
